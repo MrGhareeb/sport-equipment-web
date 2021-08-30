@@ -52,14 +52,14 @@ class AuthController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6',
-            'phone_number' => "required|min:8"
+            'password' => 'required|confirmed|min:6',
+            'mobile_number' => "required|min:8|unique:users"
         ]);
         //add the user the the database
         $user = User::create(array(
             'name' => $request->name,
             'email' => $request->email,
-            'mobile_number' => $request->phone_number,
+            'mobile_number' => $request->mobile_number,
             'user_type_id' => 1,
             'user_status_id' => 1,
             'password' => Hash::make($request->password),
@@ -69,7 +69,7 @@ class AuthController extends Controller
             return redirect('/register')->with('error', 'There was a problem when creating your account.');
         }
         //return the user the login page when the user is created
-        return redirect('/')->withSuccess('register was successful');
+        return redirect('/login')->with("message", 'Register was successful');
     }
 
 
