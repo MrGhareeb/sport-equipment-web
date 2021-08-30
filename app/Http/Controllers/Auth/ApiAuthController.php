@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
-class AuthController extends Controller
+class ApiAuthController extends Controller
 {
     public function login(Request $request)
     {
@@ -21,7 +22,8 @@ class AuthController extends Controller
             return response(['message' => 'Invalid Credentials'], 401);
         }
 
-        $token = $user->createToken('myapptoken')->plainTextToken;
+        $token = $user->createToken('apiToken')->plainTextToken;
+
         $response= [
             'token'=> $token
         ];
@@ -40,10 +42,15 @@ class AuthController extends Controller
         $user = User::create(array(
             'name' => $request->name,
             'email' => $request->email,
+            'mobile_number'=>$request->mobile_number,
+            'user_type_id'=>1,
+            'user_status_id'=>1,
             'password' => Hash::make($request->password),
         ));
 
-        $token = $user->createToken('myapptoken')->plainTextToken;
+        //TODO: return a massage created successfully 
+
+        $token = $user->createToken('apiToken')->plainTextToken;
 
         $response = [
             'token' => $token

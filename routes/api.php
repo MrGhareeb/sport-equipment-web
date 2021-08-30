@@ -1,9 +1,8 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Auth\ApiAuthController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,28 +15,16 @@ use Illuminate\Validation\ValidationException;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+
+
+// ---- api routes ----
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::post('/sanctum/token', function (Request $request) {
-//     $request->validate([
-//         'email' => 'required|email',
-//         'password' => 'required',
-//         'device_name' => 'required',
-//     ]);
+// ---- api auth routes ----
+Route::post('/register',[ApiAuthController::class, 'register']);
+Route::post('/login',[ApiAuthController::class, 'login']);
+Route::middleware('auth:sanctum')->post('/logout', [ApiAuthController::class, 'logout']);
 
-//     $user = User::where('email', $request->email)->first();
 
-//     if (! $user || ! Hash::check($request->password, $user->password)) {
-//         throw ValidationException::withMessages([
-//             'email' => ['The provided credentials are incorrect.'],
-//         ]);
-//     }
-
-//     return $user->createToken($request->device_name)->plainTextToken;
-// });
-
-Route::post('/register',[AuthController::class, 'register']);
-Route::post('/login',[AuthController::class, 'login']);
-Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);

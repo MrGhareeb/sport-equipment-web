@@ -1,25 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Register</title>
-</head>
-
-<body>
-    <form action="" method="post">
-        <div class="form">
-            <label for="name">name:</label>
-            <input type="text" name="name">
-            <label for="email">email:</label>
-            <input type="email" name="email">
-            <label for="password">password:</label>
-            <input type="password" name="password">
-            <input type="submit" value="submit">
-        </div>
+@section('title', 'Register')
+    
+@section('content')
+    <form method="POST" action="">
+        @csrf
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name"><br>
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email"><br>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password"><br>
+        <label for="mobile_number">Phone number:</label>
+        <input type="text" name="mobile_number" id="phone"><br>
+        <input type="submit" value="Submit">
     </form>
-</body>
-
-</html>
+@endsection

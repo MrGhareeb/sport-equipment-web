@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -14,15 +15,14 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/',[HomeController::class,'index'])->name("home");
-
-
+// ---- app routes ----
+Route::get('/',[HomeController::class,'index'])->name("home")->middleware('auth');
+// ---- register routes ----
 Route::get("/register",[HomeController::class,'register'])->name("register");
+Route::post("/register",[AuthController::class,'register'])->name("register");
+// ---- login routes ----
+Route::get("/login",[HomeController::class,'login'])->name("login");
+Route::post("/login",[AuthController::class,'login'])->name("login");
+// ---- logout routes ----
+Route::get("/logout",[AuthController::class,'logout'])->name("logout");
 
-
-// Route::post('/tokens/create', function (Request $request) {
-//     $token = $request->user()->createToken($request->token_name);
-
-//     return ['token' => $token->plainTextToken];
-// });
