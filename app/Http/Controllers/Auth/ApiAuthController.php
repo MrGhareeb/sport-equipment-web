@@ -24,8 +24,8 @@ class ApiAuthController extends Controller
 
         $token = $user->createToken('apiToken')->plainTextToken;
 
-        $response= [
-            'token'=> $token
+        $response = [
+            'token' => $token
         ];
 
         return response($response, 201);
@@ -33,18 +33,19 @@ class ApiAuthController extends Controller
 
     public function register(Request $request)
     {
+        //TODO: validate the mobile number
         $this->validate($request, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6',
         ]);
-        
+
         $user = User::create(array(
             'name' => $request->name,
             'email' => $request->email,
-            'mobile_number'=>$request->mobile_number,
-            'user_type_id'=>1,
-            'user_status_id'=>1,
+            'mobile_number' => $request->mobile_number,
+            'user_type_id' => 1,
+            'user_status_id' => 1,
             'password' => Hash::make($request->password),
         ));
 
@@ -64,8 +65,7 @@ class ApiAuthController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
         return [
-            'message'=> 'Logged out'
+            'message' => 'Logged out'
         ];
     }
-
 }
