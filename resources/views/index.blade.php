@@ -4,7 +4,7 @@
 @section('content')
     @include('includes.navbar')
 
-    <div class="flex flex-row w-screen my-6  mx-4">
+    <div class="flex flex-row w-screen my-6 mx-4">
         <div class="w-3/4 h-full flex align-content-center">
             {{-- left side div --}}
             <div class="ml-14 my-12 w-full">
@@ -14,27 +14,56 @@
                     <a href="" class="bg-blue-500 text-white hover:text-red-500 rounded-md w-48 py-2 text-center">Add new
                         Item</a>
                 </div>
-                {{-- componenet div --}}
-                <div class="flex flex-col items-center w-full">
-                    <div class="my-8 p-8 border border-white rounded-lg bg-gray-400">
-                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Incidunt quasi illum veritatis dolor
-                            debitis vel commodi neque accusantium libero, deserunt eaque sed reprehenderit eius tenetur sit
-                            facilis, fuga non sapiente.</p>
-                    </div>
-                </div>
+                {{-- start of component --}}
+                @include('includes.table', ['data' => $data])
                 {{-- end of component div --}}
             </div>
         </div>
         {{-- right side div --}}
         <div class="flex justify-center my-12 w-1/4">
             {{-- filter div --}}
-            <div class="w-4/5 h-2/4 border border-gray-700 bg-gray-700 rounded-lg"></div>
+            <div class="w-4/5 h-1/3">
+                <div class="flex flex-col">
+                    <div class="w-full flex flex-col justify-center mt-6 py-4 border bg-white shadow-lg rounded-lg">
+                        <div class="my-4">
+                            <h2 class="text-center">Filter</h2>
+                        </div>
+                        <div class="flex flex-row w-full px-10">
+                            <form action="" class="w-full flex justify-center">
+                                <input type="text"
+                                    class="w-3/4 px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 bg-white"
+                                    placeholder="Search">
+                                <input type="submit" class="w-1/3 py-1 bg-blue-500 ml-3 border rounded-md text-white"
+                                    value="search">
+                            </form>
+                        </div>
+                        <form method="GET" class="w-full">
+                            <div class="px-10 mt-6">
+                                <label for="status" class="ml-1">Order by</label>
+                                <select name="status" id=""
+                                    class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 bg-white">
+                                    <option value="">Ascending</option>
+                                    <option value="">Descending</option>
+                                </select>
+                            </div>
+                            <div class="px-10 mt-6">
+                                <label for="status" class="ml-1">Item Status</label>
+                                <select name="status" id=""
+                                    class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 bg-white">
+                                    <option value="">Lost or stolen</option>
+                                    <option value="">available</option>
+                                </select>
+                            </div>
+                            <div class="mt-6 flex justify-center">
+                                <input type="submit" class="w-1/3 py-2 bg-blue-500 ml-3 border rounded-md text-white"
+                                    value="search">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
         {{-- end of filter div --}}
     </div>
     {{-- end of right side div --}}
-    </div>
-
-
-
 @endsection

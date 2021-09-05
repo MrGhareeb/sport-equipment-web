@@ -11,35 +11,37 @@ class ApiAuthController extends Controller
 {
     public function login(Request $request)
     {
+        // Validate the request
         $fields = $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string'
         ]);
-
+        // Find the user by email
         $user = User::where('email', $fields['email'])->first();
-
+        // If the user is not found or the password is incorrect
         if (!$user || !Hash::check($fields['password'], $user->password)) {
             return response(['message' => 'Invalid Credentials'], 401);
         }
-
+        // Generate a token
         $token = $user->createToken('apiToken')->plainTextToken;
-
+        //create the response
         $response = [
             'token' => $token
         ];
-
+        // Return the response
         return response($response, 201);
     }
 
     public function register(Request $request)
     {
-        //TODO: validate the mobile number
+        //validate the request data
         $this->validate($request, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6',
+            'mobile_number'=>'required|min:8|unique:users'
         ]);
-
+        //create a new user
         $user = User::create(array(
             'name' => $request->name,
             'email' => $request->email,
@@ -49,15 +51,12 @@ class ApiAuthController extends Controller
             'password' => Hash::make($request->password),
         ));
 
-        //TODO: return a massage created successfully 
-
-        $token = $user->createToken('apiToken')->plainTextToken;
-
-        $response = [
-            'token' => $token
-        ];
-
-        return response($response, 201);
+        //Check if user was created and return a massage
+        if ($user) {
+            return response(['message' => 'User created successfully'], 201);
+        } else {
+            return response(['message' => 'User not created'], 401);
+        }
     }
 
 
