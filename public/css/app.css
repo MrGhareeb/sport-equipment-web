@@ -31889,6 +31889,18 @@ video {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.bg-lavender-web {
+  background-color: #e1e5f2;
+}
+
+.bg-bluetiful {
+  background-color: #84B082;
+}
+
+.bg-cadet {
+  background-color: #5D737E;
+}
+
 table {
   border-collapse: separate;
   border-spacing: 0 15px;

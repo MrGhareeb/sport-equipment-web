@@ -9,7 +9,7 @@
                     Description
                 </th>
                 <th class="p-2 text-xs font-semibold text-gray-600">
-                    status
+                    Status
                 </th>
                 <th class="p-2 text-xs font-semibold text-gray-600">
                     Actions

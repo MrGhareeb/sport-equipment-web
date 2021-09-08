@@ -1,5 +1,5 @@
     <!-- container -->
-    <div class="flex flex-col items-center bg-white text-gray-700 shadow h-full">
+    <div class="flex flex-col items-center bg-gray-50 text-gray-700 shadow h-full">
         <!-- Side Nav Bar-->
         <div class="h-16 flex items-center w-full">
             <!-- Logo Section -->

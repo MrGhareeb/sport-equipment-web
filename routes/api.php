@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Auth\ApiAuthController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -15,16 +16,16 @@ use Illuminate\Http\Request;
 |
 */
 
+    // ---- api routes ----
+    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+        return $request->user();
+    });
 
+    Route::middleware('auth:sanctum')->get('/user/getEquipments', [ApiController::class, 'getUserEquipment']);
+    Route::middleware('auth:sanctum')->get('/user/getEquipmentByID', [ApiController::class, 'getUserEquipmentByID']);
 
-// ---- api routes ----
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-// ---- api auth routes ----
-Route::post('/register',[ApiAuthController::class, 'register']);
-Route::post('/login',[ApiAuthController::class, 'login']);
-Route::middleware('auth:sanctum')->post('/logout', [ApiAuthController::class, 'logout']);
-
+    // ---- api auth routes ----
+    Route::post('/register', [ApiAuthController::class, 'register']);
+    Route::post('/login', [ApiAuthController::class, 'login']);
+    Route::middleware('auth:sanctum')->post('/logout', [ApiAuthController::class, 'logout']);
 

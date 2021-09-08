@@ -9,7 +9,18 @@ class Kernel extends HttpKernel
     /**
      * The application's global HTTP middleware stack.
      *
-     * These middleware are run during every request to your application.
+     * These middlewar// ---- api routes ----
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+Route::middleware('auth:sanctum')->get('/user/getEquipments',[ApiController::class,'getUserEquipment']);
+Route::middleware('auth:sanctum')->get('/user/getEquipmentByID',[ApiController::class,'getUserEquipmentByID']);
+
+// ---- api auth routes ----
+Route::post('/register',[ApiAuthController::class, 'register']);
+Route::post('/login',[ApiAuthController::class, 'login']);
+Route::middleware('auth:sanctum')->post('/logout', [ApiAuthController::class, 'logout']); are run during every request to your application.
      *
      * @var array
      */

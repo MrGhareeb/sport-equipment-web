@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <div class="h-screen w-screen flex bg-gray-100">
+    <div class="h-screen w-screen flex bg-gray-200">
         {{-- @include('includes.navbar') --}}
         @yield('content')
     </div>

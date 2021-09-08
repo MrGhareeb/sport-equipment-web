@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EquipmentModel;
+use App\Models\EquipmentStatusModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,8 @@ class HomeController extends Controller
     public function index()
     {
         $data = EquipmentModel::with(['equipment_status'])->get()->where('user_id', '=', Auth::id());
-        return view('index',['data' => $data]);
+        $equipmentStatus = EquipmentStatusModel::all();
+        return view('index',['data' => $data, 'equipmentStatus' => $equipmentStatus]);
     }
 
     public function login()
@@ -32,7 +34,7 @@ class HomeController extends Controller
     }
 
     public function test(){
-        $data = EquipmentModel::with(['equipment_status'])->get()->where('user_id', '=', Auth::id());
-        dd($data[0]->equipment_status->equipment_status_value);
+        $data = EquipmentStatusModel::all();
+        dd($data);
     }
 }
