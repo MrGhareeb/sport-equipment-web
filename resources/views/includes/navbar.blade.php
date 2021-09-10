@@ -3,8 +3,8 @@
         <!-- Side Nav Bar-->
         <div class="h-16 flex items-center w-full">
             <!-- Logo Section -->
-            <a class="h-6 w-6 mx-auto" href="{{ route('home') }}">
-                {{-- img source --}}
+            <a class="h-10 w-12 mx-auto" href="{{ route('home') }}">
+                <img src="{{ asset("img/Untitled_Artwork.png") }}" class="w-full h-full" alt="">
             </a>
         </div>
 

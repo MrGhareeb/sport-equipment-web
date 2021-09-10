@@ -11,7 +11,7 @@
                 {{-- page indecator div --}}
                 <div class="flex items-baseline justify-between mr-4">
                     <h1 class="text-2xl">Items dashboard</h1>
-                    <a href="" class="bg-blue-500 text-white hover:bg-green-400 rounded-md w-48 py-2 text-center">Add new
+                    <a href="{{ route('add') }}" class="bg-blue-500 text-white hover:bg-green-400 rounded-md w-48 py-2 text-center">Add new
                         Item</a>
                 </div>
                 {{-- start of component --}}

@@ -6,7 +6,7 @@
     <div class="flex items-center justify-center m-0 w-full">
         <div class="px-8 py-6 mt-4 text-left bg-white shadow-xl border border-white rounded-2xl">
             <div class="flex justify-center">
-                {{-- logo here --}}
+                <img src="{{ asset("img/Untitled_Artwork.png") }}" class="w-25 h-20" alt="">
             </div>
             <h3 class="text-2xl font-bold text-center">Create new account</h3>
             <form method="POST" action="">

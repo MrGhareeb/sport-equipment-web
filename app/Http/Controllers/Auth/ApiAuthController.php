@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class ApiAuthController extends Controller
 {
@@ -16,6 +17,16 @@ class ApiAuthController extends Controller
             'email' => 'required|string|email',
             'password' => 'required|string'
         ]);
+
+        $input = $request->all();
+        $validator = Validator::make($input, [
+            'email' => 'required|string|email',
+            'password' => 'required|string'
+        ]);
+        //return error response if validation fails
+        if ($validator->fails()) {
+            return response(['error' => $validator->errors()], 401);
+        }
         // Find the user by email
         $user = User::where('email', $fields['email'])->first();
         // If the user is not found or the password is incorrect
@@ -34,13 +45,17 @@ class ApiAuthController extends Controller
 
     public function register(Request $request)
     {
-        //validate the request data
-        $this->validate($request, [
+        $input = $request->all();
+        $validator = Validator::make($input, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6',
             'mobile_number'=>'required|min:8|unique:users'
         ]);
+        //return error response if validation fails
+        if ($validator->fails()) {
+            return response(['error' => $validator->errors()], 401);
+        }
         //create a new user
         $user = User::create(array(
             'name' => $request->name,
