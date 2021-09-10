@@ -12,12 +12,6 @@ class ApiAuthController extends Controller
 {
     public function login(Request $request)
     {
-        // Validate the request
-        $fields = $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string'
-        ]);
-
         $input = $request->all();
         $validator = Validator::make($input, [
             'email' => 'required|string|email',
@@ -28,9 +22,9 @@ class ApiAuthController extends Controller
             return response(['error' => $validator->errors()], 401);
         }
         // Find the user by email
-        $user = User::where('email', $fields['email'])->first();
+        $user = User::where('email', $input['email'])->first();
         // If the user is not found or the password is incorrect
-        if (!$user || !Hash::check($fields['password'], $user->password)) {
+        if (!$user || !Hash::check($input['password'], $user->password)) {
             return response(['message' => 'Invalid Credentials'], 401);
         }
         // Generate a token
