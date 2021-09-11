@@ -19,19 +19,20 @@ class ApiAuthController extends Controller
         ]);
         //return error response if validation fails
         if ($validator->fails()) {
-            return response(['error' => $validator->errors()], 401);
+            return response(['error' => ["Validation" => $validator->errors(),'message'=>'Validation error'],"successful"=>false], 401);
         }
         // Find the user by email
         $user = User::where('email', $input['email'])->first();
         // If the user is not found or the password is incorrect
         if (!$user || !Hash::check($input['password'], $user->password)) {
-            return response(['message' => 'Invalid Credentials'], 401);
+            return response(['error'=> ['message' => 'Invalid Credentials'] ,"successful"=>false], 401);
         }
         // Generate a token
         $token = $user->createToken('apiToken')->plainTextToken;
         //create the response
         $response = [
-            'token' => $token
+            'token' => $token,
+            "successful"=>true
         ];
         // Return the response
         return response($response, 201);
@@ -48,7 +49,7 @@ class ApiAuthController extends Controller
         ]);
         //return error response if validation fails
         if ($validator->fails()) {
-            return response(['error' => $validator->errors()], 401);
+            return response(['error' => ["Validation" => $validator->errors(),'message'=>'Validation error'],"successful"=>false], 401);
         }
         //create a new user
         $user = User::create(array(
@@ -62,18 +63,18 @@ class ApiAuthController extends Controller
 
         //Check if user was created and return a massage
         if ($user) {
-            return response(['message' => 'User created successfully'], 201);
+            return response(['message' => 'User created successfully',"successful"=>true], 201);
         } else {
-            return response(['message' => 'User not created'], 401);
+            return response(['error' => ['message' => 'User not created'],"successful"=>false], 401);
         }
     }
-
 
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
         return [
-            'message' => 'Logged out'
+            'message' => 'Logged out',
+            "successful"=>true
         ];
     }
 }
