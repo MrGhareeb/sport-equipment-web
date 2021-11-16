@@ -37,6 +37,22 @@ class CreateEquipmentTable extends Migration
             $table->foreignId('equipment_status_id')->constrained('equipment_status')->references("equipment_status_id");
             $table->foreignId('equipment_type_id')->constrained('equipment_type')->references("equipment_type_id");
         });
+
+        Schema::create("equipment_images",function(Blueprint $table){
+            $table->id("equipment_image_id")->autoIncrement();
+            $table->string("equipment_image_path");
+            $table->timestamps();
+            $table->foreignId("equipment_id")->constrained("equipments")->references("equipment_id");
+        });
+
+        Schema::create("equipment_transfer",function(Blueprint $table){
+            $table->id("equipment_transfer_id");
+            $table->integer("new_user_id");
+            $table->timestamps();
+            $table->foreignId("equipment_id")->constrained("equipments")->references("equipment_id");
+            $table->foreignId("user_id")->constrained("users")->references("id");
+        });
+
     }
 
     /**

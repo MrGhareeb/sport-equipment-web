@@ -17,10 +17,6 @@ class HomeController extends Controller
         return view('index',['data' => $data, 'equipmentStatus' => $equipmentStatus]);
     }
 
-    public function add(Request $request){
-        return view('addEquipment');
-    }
-
     public function login()
     {
         //check if user is logged in

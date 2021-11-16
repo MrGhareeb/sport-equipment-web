@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,8 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 // ---- app routes ----
 Route::get('/',[HomeController::class,'index'])->name("home")->middleware('auth');
-Route::get('/add',[HomeController::class,'add'])->name("add")->middleware('auth');
-
+Route::get('/add',[EquipmentController::class,"add"])->name("add")->middleware('auth');
 
 Route::get('/test',[HomeController::class,'test'])->name("test")->middleware('auth');
 // ---- register routes ----
