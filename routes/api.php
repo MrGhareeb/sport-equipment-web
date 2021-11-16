@@ -23,7 +23,7 @@ use Illuminate\Http\Request;
 
     Route::middleware('auth:sanctum')->get('/user/getEquipments', [ApiController::class, 'getUserEquipment']);
     Route::middleware('auth:sanctum')->get('/user/getEquipmentByID', [ApiController::class, 'getUserEquipmentByID']);
-    Route::middleware('auth:sanctum')->get('/user/setEquipment', [ApiController::class, 'setUserEquipment']);
+    Route::middleware('auth:sanctum')->post('/user/createEquipment', [ApiController::class, 'setUserEquipment']);
 
     // ---- api auth routes ----
     Route::post('/register', [ApiAuthController::class, 'register']);
