@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EquipmentImages;
 use App\Models\EquipmentModel;
 
 use Illuminate\Http\Request;
@@ -9,20 +10,22 @@ use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
 {
-    public function getUserEquipment(Request $request){
+    public function getUserEquipment(Request $request)
+    {
         //get the user 
         $user = $request->user();
         //get the user's equipment
         $equipments = EquipmentModel::where('user_id', $user->id)->get();
         $response = [
-            "equipments"=> $equipments,
-            "successful"=>true
+            "equipments" => $equipments,
+            "successful" => true
         ];
         //return the response
-        return response($response,200);
+        return response($response, 200);
     }
-    
-    public function getUserEquipmentByID(Request $request){
+
+    public function getUserEquipmentByID(Request $request)
+    {
 
         //get the values from the request
         $input = $request->all();
@@ -32,24 +35,25 @@ class ApiController extends Controller
         ]);
         //if the validation fails return the error
         if ($validator->fails()) {
-            return response(['error' => $validator->errors(),"successful"=>false], 401);
+            return response(['error' => $validator->errors(), "successful" => false], 401);
         }
         //get the user
         $user = $request->user();
         //get the equipment
         $equipments = EquipmentModel::where('user_id', $user->id)->where('equipment_id', $input['id'])->get();
         //if the equipment is not found return an error
-        if(count($equipments) > 0){
+        if (count($equipments) > 0) {
             $response = [
-                "equipments"=>$equipments,
-                "successful"=>true
+                "equipments" => $equipments,
+                "successful" => true
             ];
-            return response($response,200);
+            return response($response, 200);
         }
-        return response(['error'=> ['message' => 'Equipment not found'],"successful"=>false], 404);
+        return response(['error' => ['message' => 'Equipment not found'], "successful" => false], 404);
     }
 
-    public function setUserEquipment(Request $request){
+    public function setUserEquipment(Request $request)
+    {
         //get the values from the request
         $input = $request->all();
         //validate the values
@@ -62,7 +66,7 @@ class ApiController extends Controller
         ]);
         //if the validation fails return the error
         if ($validator->fails()) {
-            return response(['error' => $validator->errors(),"successful"=>false], 401);
+            return response(['error' => $validator->errors(), "successful" => false], 401);
         }
         //get the user
         $user = $request->user();
@@ -77,14 +81,32 @@ class ApiController extends Controller
 
         //get the equipment id
         $equipment_id = $equipment->equipment_id;
-        //get the image name
-        $fileName = $request->file('images')->getClientOriginalName();
-        //save the image
-        $result = $request->file('images')->storeAs('public/equipment_images/' . $equipment_id, $fileName);
+        //get the images
+        $images = $request->file('images');
+        //allowed file types
+        $allowedFileTypes = ['jpeg', 'jpg', 'png'];
+        //loop through the images
+        foreach ($images as $image) {
+            //get the image name
+            $fileName = $request->file('images')->getClientOriginalName();
+            //get the image extension
+            $fileExtension = $image->getClientOriginalExtension();
+            //check if the extension is allowed
+            $check = in_array($fileExtension, $allowedFileTypes);
+
+            //if the extension is allowed
+            if ($check) {
+                //save the image
+                $path = $request->file('images')->storeAs('/public/equipment_images/' . $equipment_id, $fileName);
+                //save the images path to the database
+                $equipmentImage = new EquipmentImages();
+                $equipmentImage->equipment_id = $equipment_id;
+                $equipmentImage->equipment_img_path = $path;
+                $equipmentImage->created_at = date('Y-m-d H:i:s');
+            }
+        }
 
         //return the response
-        return response(['successful'=>true,'store-res'=>$result], 200);
+        return response(['successful' => true], 200);
     }
-
-
 }
