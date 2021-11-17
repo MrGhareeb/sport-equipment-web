@@ -55,9 +55,10 @@ class ApiController extends Controller
         //validate the values
         $validator = Validator::make($input, [
             'equipment_name' => 'required|string',
-            'equipment_description' => 'string',
+            'equipment_description' => 'string|required',
             'equipment_status_id' => 'required|integer',
-            'equipment_type_id' => 'required|integer'
+            'equipment_type_id' => 'required|integer',
+            'images' => 'required',
         ]);
         //if the validation fails return the error
         if ($validator->fails()) {
@@ -73,8 +74,16 @@ class ApiController extends Controller
         $equipment->equipment_type_id = $input['equipment_type_id'];
         $equipment->user_id = $user->id;
         $equipment->save();
+
+        //get the equipment id
+        $equipment_id = $equipment->equipment_id;
+        //get the image name
+        $fileName = $request->file('images')->getClientOriginalName();
+        //save the image
+        $result = $request->file('images')->storeAs('public/equipment_images/' . $equipment_id, $fileName);
+
         //return the response
-        return response(['successful'=>true], 200);
+        return response(['successful'=>true,'store-res'=>$result], 200);
     }
 
 
