@@ -103,6 +103,9 @@ class ApiController extends Controller
                 $equipmentImage->equipment_id = $equipment_id;
                 $equipmentImage->equipment_img_path = $path;
                 $equipmentImage->created_at = date('Y-m-d H:i:s');
+            }else{
+                //if the extension is not allowed return an error
+                return response(['error' => ['message' => 'File type not allowed'], "successful" => false], 401);
             }
         }
 
