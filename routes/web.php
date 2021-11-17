@@ -30,3 +30,5 @@ Route::post("/login",[AuthController::class,'login'])->name("login");
 // ---- logout routes ----
 Route::get("/logout",[AuthController::class,'logout'])->name("logout");
 
+Route::get('/test',[HomeController::class,'test']);
+

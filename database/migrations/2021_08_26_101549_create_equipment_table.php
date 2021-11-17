@@ -30,7 +30,6 @@ class CreateEquipmentTable extends Migration
             $table->id("equipment_id")->autoIncrement();
             $table->string("equipment_name");
             $table->string("equipment_description");
-            $table->string("equipment_img")->nullable();
             $table->timestamps();
             //foreign keys
             $table->foreignId('user_id')->constrained('users')->references('id');

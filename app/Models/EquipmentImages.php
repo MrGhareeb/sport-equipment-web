@@ -10,10 +10,10 @@ class EquipmentImages extends Model
     use HasFactory;
 
     protected $table = 'equipment_images';
-    protected $primaryKey = 'equipment_img_id';
+    protected $primaryKey = 'equipment_image_id';
     protected $fillable = [
         'equipment_id', 
-        'equipment_img_path',
+        'equipment_image_path',
         'created_at',
         'updated_at'
     ];

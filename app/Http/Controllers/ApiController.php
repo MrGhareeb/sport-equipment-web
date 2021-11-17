@@ -62,7 +62,7 @@ class ApiController extends Controller
             'equipment_description' => 'string|required',
             'equipment_status_id' => 'required|integer',
             'equipment_type_id' => 'required|integer',
-            'images' => 'required',
+            'images' => 'array|required',
         ]);
         //if the validation fails return the error
         if ($validator->fails()) {
@@ -88,24 +88,27 @@ class ApiController extends Controller
         //loop through the images
         foreach ($images as $image) {
             //get the image name
-            $fileName = $request->file('images')->getClientOriginalName();
+            $fileName = $image->getClientOriginalName();
             //get the image extension
             $fileExtension = $image->getClientOriginalExtension();
             //check if the extension is allowed
             $check = in_array($fileExtension, $allowedFileTypes);
-
             //if the extension is allowed
             if ($check) {
                 //save the image
-                $path = $request->file('images')->storeAs('/public/equipment_images/' . $equipment_id, $fileName);
+                $path = $image->storeAs('/public/equipment_images/' . $equipment_id, $fileName);
                 //save the images path to the database
                 $equipmentImage = new EquipmentImages();
                 $equipmentImage->equipment_id = $equipment_id;
-                $equipmentImage->equipment_img_path = $path;
+                $equipmentImage->equipment_image_path = $path;
                 $equipmentImage->created_at = date('Y-m-d H:i:s');
+                $inserted = $equipmentImage->save();
+                if (!$inserted) {
+                    return response(['successful' => false], 400);
+                }
             }else{
                 //if the extension is not allowed return an error
-                return response(['error' => ['message' => 'File type not allowed'], "successful" => false], 401);
+                return response(['error' => ['message' => 'File type not allowed'], "successful" => false], 400);
             }
         }
 

@@ -7,6 +7,7 @@ use App\Models\EquipmentStatusModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -34,7 +35,7 @@ class HomeController extends Controller
     }
 
     public function test(){
-        $data = EquipmentStatusModel::all();
-        dd($data);
+        $contents = Storage::disk('public')->get('equipment_images/5/pexels-pixabay-532220.jpg');
+        return response($contents)->header('Content-Type', 'image/jpeg');
     }
 }
