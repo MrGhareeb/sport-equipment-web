@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EquipmentImages;
+use App\Models\equipmentImagesModel;
 use App\Models\EquipmentModel;
 
 use Illuminate\Http\Request;
@@ -26,7 +26,6 @@ class ApiController extends Controller
 
     public function getUserEquipmentByID(Request $request)
     {
-
         //get the values from the request
         $input = $request->all();
         //validate the values
@@ -78,7 +77,6 @@ class ApiController extends Controller
         $equipment->equipment_type_id = $input['equipment_type_id'];
         $equipment->user_id = $user->id;
         $equipment->save();
-
         //get the equipment id
         $equipment_id = $equipment->equipment_id;
         //get the images
@@ -98,7 +96,7 @@ class ApiController extends Controller
                 //save the image
                 $path = $image->storeAs('/public/equipment_images/' . $equipment_id, $fileName);
                 //save the images path to the database
-                $equipmentImage = new EquipmentImages();
+                $equipmentImage = new EquipmentImagesModel();
                 $equipmentImage->equipment_id = $equipment_id;
                 $equipmentImage->equipment_image_path = $path;
                 $equipmentImage->created_at = date('Y-m-d H:i:s');

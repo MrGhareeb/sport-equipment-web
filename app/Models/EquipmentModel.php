@@ -27,4 +27,8 @@ class EquipmentModel extends Model
     public function equipment_status(){
         return $this->belongsTo(EquipmentStatusModel::class, 'equipment_status_id', 'equipment_status_id');
     }
+
+    public function equipment_images(){
+        return $this->hasMany(equipmentImagesModel::class, 'equipment_id', 'equipment_id');
+    }
 }

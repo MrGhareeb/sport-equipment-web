@@ -35,7 +35,9 @@ class HomeController extends Controller
     }
 
     public function test(){
-        $contents = Storage::disk('public')->get('equipment_images/5/pexels-pixabay-532220.jpg');
-        return response($contents)->header('Content-Type', 'image/jpeg');
+        // $contents = Storage::disk('public')->get('equipment_images/5/pexels-pixabay-532220.jpg');
+        // return response($contents)->header('Content-Type', 'image/jpeg');
+        $data = EquipmentModel::with(['equipment_status','equipment_images'])->get()->where('user_id', '=', Auth::id());
+        return $data;
     }
 }
