@@ -112,5 +112,6 @@ class ApiController extends Controller
 
         //return the response
         return response(['successful' => true], 200);
+        return redirect()->name('home');
     }
 }

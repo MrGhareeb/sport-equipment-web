@@ -11,8 +11,14 @@
                 {{-- page indecator div --}}
                 <div class="flex items-baseline justify-between mr-4">
                     <h1 class="text-2xl">Items dashboard</h1>
-                    <a href="{{ route('add') }}" class="bg-blue-500 text-white hover:bg-blue-700 rounded-md w-48 py-2 text-center">Add new
-                        Item</a>
+                    {{--  --}}
+                    {{-- <a href="{{ route('add') }}"
+                        class="bg-blue-500 text-white hover:bg-blue-700 rounded-md w-48 py-2 text-center">Add new
+                        Item</a> --}}
+
+                    @include('includes.addEquipment')
+
+                    {{--  --}}
                 </div>
                 {{-- start of component --}}
                 @include('includes.table', ['data' => $data])
@@ -51,9 +57,11 @@
                                 <select name="status" id=""
                                     class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 bg-white">
                                     @foreach ($equipmentStatus as $status)
-                                        
+                                        @if ($status->equipment_status_id != 5)
+                                            <option value="{{ $status->equipment_status_id ?? '' }}">
+                                                {{ $status->equipment_status_value ?? '' }}</option>
+                                        @endif
                                     @endforeach
-                                    <option value="{{ $status->equipment_status_id ?? '' }}">{{ $status->equipment_status_value ?? '' }}</option>
                                 </select>
                             </div>
                             <div class="mt-6 flex justify-center">
