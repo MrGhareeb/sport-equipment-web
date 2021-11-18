@@ -15,7 +15,9 @@ class ApiController extends Controller
         //get the user 
         $user = $request->user();
         //get the user's equipment
-        $equipments = EquipmentModel::where('user_id', $user->id)->get();
+        //$data = EquipmentModel::with(['equipment_status','equipment_images'])->get()->where('user_id', '=', Auth::id());
+        
+        $equipments = EquipmentModel::with(['equipment_status','equipment_images'])->where('user_id', $user->id)->get();
         $response = [
             "equipments" => $equipments,
             "successful" => true

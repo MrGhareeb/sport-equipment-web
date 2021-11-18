@@ -20,7 +20,7 @@
     transition-all
     duration-150
   "
-    type="button" onclick="toggleModal('modal-example-regular')">
+    type="button" onclick="toggleModal('add-equipment')">
     Add new item
 </button>
 <!-- Modal -->
@@ -35,7 +35,7 @@
     justify-center
     items-center
   "
-    id="modal-example-regular">
+    id="add-equipment">
     <div class="relative w-auto my-6 mx-auto max-w-3xl">
         <!--content-->
         <div
@@ -75,7 +75,7 @@
             outline-none
             focus:outline-none
           "
-                    onclick="toggleModal('modal-example-regular')">
+                    onclick="toggleModal('add-equipment')">
                     <span
                         class="
               bg-transparent
@@ -141,7 +141,7 @@
             transition-all
             duration-150
           "
-                    type="button" onclick="toggleModal('modal-example-regular')">
+                    type="button" onclick="toggleModal('add-equipment')">
                     Close
                 </button>
                 <input
@@ -167,12 +167,12 @@
                     type="submit" form="addItem" value=" Save item">
                     
                 </input>
-                {{-- onclick="toggleModal('modal-example-regular')" --}}
+                {{-- onclick="toggleModal('add-equipment')" --}}
             </div>
         </div>
     </div>
 </div>
-<div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-example-regular-backdrop"></div>
+<div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="add-equipment-backdrop"></div>
 <script type="text/javascript">
     function toggleModal(modalID) {
         document.getElementById(modalID).classList.toggle("hidden");
