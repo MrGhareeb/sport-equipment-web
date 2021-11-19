@@ -26,6 +26,12 @@
                         <span class="text-base tracking-wide text-white">{{ Session::get('message') ?? '' }}</span>
                     </div>
                 @endif
+                {{-- to display alert massages --}}
+                @if (Session::get('alert'))
+                    <div class="mt-4 flex justify-center bg-yellow-500 border rounded-md border-yellow-500">
+                        <span class="text-base tracking-wide text-white">{{ Session::get('alert') ?? '' }}</span>
+                    </div>
+                @endif
                 {{-- to display error massages --}}
                 @if (Session::get('error'))
                     <div class="mt-4 flex justify-center bg-red-500 border rounded-md border-red-500">
@@ -48,8 +54,9 @@
                             <h2 class="text-center">Filter</h2>
                         </div>
                         <div class="flex flex-row w-full px-10">
-                            <form action="" class="w-full flex justify-center">
-                                <input type="text"
+                            <form method="GET" class="w-full flex justify-center">
+                                @csrf
+                                <input type="text" name="search"
                                     class="w-3/4 px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 bg-white"
                                     placeholder="Search">
                                 <input type="submit" class="w-1/3 py-1 bg-blue-500 ml-3 border rounded-md text-white"
@@ -57,12 +64,13 @@
                             </form>
                         </div>
                         <form method="GET" class="w-full">
+                            @csrf
                             <div class="px-10 mt-6">
-                                <label for="status" class="ml-1">Order by</label>
-                                <select name="status" id=""
+                                <label for="sort" class="ml-1">Order by</label>
+                                <select name="order" id=""
                                     class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 bg-white">
-                                    <option value="asd">Ascending</option>
-                                    <option value="dec">Descending</option>
+                                    <option value="asc">Ascending</option>
+                                    <option value="desc">Descending</option>
                                 </select>
                             </div>
                             <div class="px-10 mt-6">

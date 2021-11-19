@@ -33,7 +33,7 @@ class EquipmentController extends Controller
         //get the images
         $images = $request->file('images');
         if($images == null){
-            return redirect('/')->with('message', 'Equipment has been added without an image');
+            return redirect('/')->with('alert', 'Equipment has been added without an image');
         }
         //allowed file types
         $allowedFileTypes = ['jpeg', 'jpg', 'png'];

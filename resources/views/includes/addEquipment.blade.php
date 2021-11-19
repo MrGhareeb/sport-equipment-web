@@ -60,35 +60,7 @@
           border-b border-solid border-gray-200
           rounded-t
         ">
-                <h3 class="text-3xl font-semibold text-center w-full ml-6">Add new Item</h3>
-                <button
-                    class="
-            p-1
-            ml-auto
-            bg-transparent
-            border-0
-            text-gray-300
-            float-right
-            text-3xl
-            leading-none
-            font-semibold
-            outline-none
-            focus:outline-none
-          "
-                    onclick="toggleModal('add-equipment')">
-                    <span
-                        class="
-              bg-transparent
-              h-6
-              w-6
-              text-2xl
-              block
-              outline-none
-              focus:outline-none
-            ">
-                        <i class="fas fa-times"></i>
-                    </span>
-                </button>
+                <h3 class="text-3xl font-semibold text-center w-full">Add new Item</h3>
             </div>
             <!--body-->
             <div class="relative p-6 h-1/3 flex-auto flex-col w-96">
@@ -131,7 +103,7 @@
                         {{-- upload image --}}
                         <div class="flex items-center justify-center bg-grey-lighter">
                             <label
-                                class="w-64 flex flex-col items-center mt-5 px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-green-500">
+                                class="w-64 flex flex-col items-center mt-5 px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-blue-500">
                                 <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 20 20">
                                     <path
@@ -158,6 +130,7 @@
                 <button
                     class="
             text-blue-500
+            hover:text-red-700
             background-transparent
             font-bold
             uppercase
@@ -178,6 +151,7 @@
                 <input
                     class="
             bg-blue-500
+            hover:bg-blue-700
             text-white
             active:bg-blue-600
             font-bold

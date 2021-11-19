@@ -14,12 +14,25 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        // $data = EquipmentModel::with(['equipment_status'])->get()->where('user_id', '=', Auth::id());
-        //get the equipments of the user
+        //validate the request
+        $request->validate([
+            'order' => 'string|max:5',
+            'status' => 'integer',
+            'search' => 'string|max:255',
+        ]);
+        //get the equipments of the user 
         $status = $request->status ?? 1;
-        $data = EquipmentModel::where('user_id', '=', Auth::id())->where('equipment_status_id',"=",$status)->paginate(6);
-      
+        $order = $request->order ?? 'asc';
+        $search = $request->search ?? null;
+        //check if the search is empty or not and execute the query accordingly
+        if ($search != null) {
+            $data = EquipmentModel::where('user_id', '=', Auth::id())->where('equipment_name', "LIKE", $search)->orWhere('equipment_description', "LIKE", $search)->orderby('equipment_name', $order)->paginate(6);
+        } else {
+            $data = EquipmentModel::where('user_id', '=', Auth::id())->where('equipment_status_id', "=", $status)->orderby('equipment_name', $order)->paginate(6);
+        }
+        //get all the equipment status
         $equipmentStatus = EquipmentStatusModel::all();
+        //get all the equipment type
         $equipmentType = EquipmentTypeModel::all();
         return view('index', ['data' => $data, 'equipmentStatus' => $equipmentStatus, 'equipmentType' => $equipmentType]);
     }
