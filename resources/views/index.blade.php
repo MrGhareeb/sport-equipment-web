@@ -34,6 +34,7 @@
                 @endif
                 {{-- start of component --}}
                 @include('includes.table', ['data' => $data])
+                {{-- end of component --}}
                 {{-- end of component div --}}
             </div>
         </div>

@@ -24,11 +24,17 @@ class EquipmentController extends Controller
         $equipment->equipment_status_id = $request->status;
         $equipment->equipment_type_id = $request->equipmentType;
         $equipment->user_id = Auth::user()->id;
-        $equipment->save();
+        $inserted = $equipment->save();
+        if (!$inserted) {
+            return redirect('/')->with('error', 'adding equipment failed');
+        }
         //get the equipment id
         $equipment_id = $equipment->equipment_id;
         //get the images
         $images = $request->file('images');
+        if($images == null){
+            return redirect('/')->with('message', 'Equipment has been added without an image');
+        }
         //allowed file types
         $allowedFileTypes = ['jpeg', 'jpg', 'png'];
         //loop through the images
