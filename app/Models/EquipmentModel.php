@@ -20,8 +20,8 @@ class EquipmentModel extends Model
         'user_id'
     ];
 
-    public function equipmentType(){
-        return $this->belongsTo('EquipmentTypeModel');
+    public function equipment_type(){
+        return $this->belongsTo(EquipmentTypeModel::class, 'equipment_type_id', 'equipment_type_id');
     }
 
     public function equipment_status(){

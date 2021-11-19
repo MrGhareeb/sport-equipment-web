@@ -15,9 +15,7 @@ class ApiController extends Controller
         //get the user 
         $user = $request->user();
         //get the user's equipment
-        //$data = EquipmentModel::with(['equipment_status','equipment_images'])->get()->where('user_id', '=', Auth::id());
-        
-        $equipments = EquipmentModel::with(['equipment_status','equipment_images'])->where('user_id', $user->id)->get();
+        $equipments = EquipmentModel::with(['equipment_status','equipment_images',"equipment_type"])->where('user_id', $user->id)->get();
         $response = [
             "equipments" => $equipments,
             "successful" => true
@@ -41,7 +39,7 @@ class ApiController extends Controller
         //get the user
         $user = $request->user();
         //get the equipment
-        $equipments = EquipmentModel::where('user_id', $user->id)->where('equipment_id', $input['id'])->get();
+        $equipments = EquipmentModel::with(['equipment_status','equipment_images',"equipment_type"])->where('user_id', $user->id)->where('equipment_id', $input['id'])->get();
         //if the equipment is not found return an error
         if (count($equipments) > 0) {
             $response = [
