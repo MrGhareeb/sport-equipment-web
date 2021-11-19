@@ -20,6 +20,18 @@
 
                     {{--  --}}
                 </div>
+                {{-- to display massages --}}
+                @if (Session::get('message'))
+                    <div class="mt-4 flex justify-center bg-green-500 border rounded-md border-green-500">
+                        <span class="text-base tracking-wide text-white">{{ Session::get('message') ?? '' }}</span>
+                    </div>
+                @endif
+                {{-- to display error massages --}}
+                @if (Session::get('error'))
+                    <div class="mt-4 flex justify-center bg-red-500 border rounded-md border-red-500">
+                        <span class="text-base tracking-wide text-white">{{ Session::get('error') }}</span>
+                    </div>
+                @endif
                 {{-- start of component --}}
                 @include('includes.table', ['data' => $data])
                 {{-- end of component div --}}

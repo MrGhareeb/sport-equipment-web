@@ -60,7 +60,7 @@
           border-b border-solid border-gray-200
           rounded-t
         ">
-                <h3 class="text-3xl font-semibold">Add new Item</h3>
+                <h3 class="text-3xl font-semibold text-center w-full ml-6">Add new Item</h3>
                 <button
                     class="
             p-1
@@ -92,7 +92,8 @@
             </div>
             <!--body-->
             <div class="relative p-6 h-1/3 flex-auto flex-col w-96">
-                <form id="addItem" method="post" action="/">
+                <form id="addItem" method="post" action="{{ route('add') }}" enctype="multipart/form-data">
+                    @csrf
                     <div class="flex flex-col p-4 justify-center items-center">
                         {{-- itemName --}}
                         <label for="itemName">Item name</label>
@@ -115,8 +116,14 @@
                                 @endif
                             @endforeach
                         </select>
-
-                        <label for=""></label>
+                        {{--  --}}
+                        <label for="equipmentType" class="mt-2"> Equipment type </label>
+                        <select name="equipmentType" class="w-3/4 px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 bg-white" id="">
+                            @foreach ($equipmentType as $type)
+                                <option value="{{ $type->equipment_type_id ?? '' }}">
+                                    {{ $type->equipment_type_value ?? '' }}</option>
+                            @endforeach
+                        </select>
 
                         {{-- <input type="text"
                             class="w-3/4 px-4 py-2 my-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 bg-white"
@@ -131,7 +138,7 @@
                                         d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
                                 </svg>
                                 <span class="mt-2 text-base leading-normal">Select a file</span>
-                                <input type='file' class="hidden" />
+                                <input type='file' name="images[]" multiple class="hidden" />
                             </label>
                         </div>
                         {{--  --}}

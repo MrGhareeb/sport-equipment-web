@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EquipmentModel;
 use App\Models\EquipmentStatusModel;
+use App\Models\EquipmentTypeModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,8 @@ class HomeController extends Controller
     {
         $data = EquipmentModel::with(['equipment_status'])->get()->where('user_id', '=', Auth::id());
         $equipmentStatus = EquipmentStatusModel::all();
-        return view('index',['data' => $data, 'equipmentStatus' => $equipmentStatus]);
+        $equipmentType = EquipmentTypeModel::all();
+        return view('index',['data' => $data, 'equipmentStatus' => $equipmentStatus,'equipmentType'=>$equipmentType]);
     }
 
     public function login()
