@@ -53,11 +53,12 @@ class HomeController extends Controller
         return view('Auth.register');
     }
 
-    public function test()
+    public function test(Request $request)
     {
         // $contents = Storage::disk('public')->get('equipment_images/5/pexels-pixabay-532220.jpg');
         // return response($contents)->header('Content-Type', 'image/jpeg');
         $data = EquipmentModel::with(['equipment_status', 'equipment_images'])->get()->where('user_id', '=', Auth::id());
-        return $data;
+        $imagePath = $data[0]->equipment_images[0]->equipment_image_path;
+        return Storage::response($imagePath);
     }
 }
