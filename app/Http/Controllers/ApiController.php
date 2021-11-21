@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\equipmentImagesModel;
 use App\Models\EquipmentModel;
-
+use App\Models\EquipmentStatusModel;
+use App\Models\EquipmentTypeModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
@@ -15,7 +18,7 @@ class ApiController extends Controller
         //get the user 
         $user = $request->user();
         //get the user's equipment
-        $equipments = EquipmentModel::with(['equipment_status','equipment_images',"equipment_type"])->where('user_id', $user->id)->get();
+        $equipments = EquipmentModel::with(['equipment_status', 'equipment_images', "equipment_type"])->where('user_id', $user->id)->get();
         $response = [
             "equipments" => $equipments,
             "successful" => true
@@ -39,7 +42,7 @@ class ApiController extends Controller
         //get the user
         $user = $request->user();
         //get the equipment
-        $equipments = EquipmentModel::with(['equipment_status','equipment_images',"equipment_type"])->where('user_id', $user->id)->where('equipment_id', $input['id'])->get();
+        $equipments = EquipmentModel::with(['equipment_status', 'equipment_images', "equipment_type"])->where('user_id', $user->id)->where('equipment_id', $input['id'])->get();
         //if the equipment is not found return an error
         if (count($equipments) > 0) {
             $response = [
@@ -49,6 +52,21 @@ class ApiController extends Controller
             return response($response, 200);
         }
         return response(['error' => ['message' => 'Equipment not found'], "successful" => false], 404);
+    }
+
+    public function getUserEquipmentImage(Request $request)
+    {
+        //get the user
+        $user = $request->user();
+        //get the data from the database       
+        $data = EquipmentModel::whereHas('equipment_images', function ($q) use ($request) {
+            $q->where('equipment_image_id', '=', $request->equipment_image_id);
+        })->get()->where('user_id', '=', $user->id);
+        //if the equipment is not found return an error
+        if (count($data) > 0) {
+            return Storage::response($data[0]->equipment_images[0]->equipment_image_path);
+        }
+        return response(['error' => ['message' => 'Equipment image not found or the image do not belong to the user'], "successful" => false], 404);
     }
 
     public function setUserEquipment(Request $request)
@@ -104,14 +122,34 @@ class ApiController extends Controller
                 if (!$inserted) {
                     return response(['successful' => false], 400);
                 }
-            }else{
+            } else {
                 //if the extension is not allowed return an error
                 return response(['error' => ['message' => 'File type not allowed'], "successful" => false], 400);
             }
         }
-
         //return the response
         return response(['successful' => true], 200);
         return redirect()->name('home');
+    }
+    public function getAllEquipmentTypes(Request $request)
+    {
+        //get all equipment types
+        $data = EquipmentTypeModel::all();
+        //return the response
+        return response([
+            "equipment_types" => $data,
+            "successful" => true
+        ], 200);
+    }
+
+
+    public function getAllEquipmentStatuses(Request $request){
+        //get all equipment statuses
+        $data = EquipmentStatusModel::all();
+        //return the response
+        return response([
+            "equipment_statuses" => $data,
+            "successful" => true
+        ], 200);
     }
 }
