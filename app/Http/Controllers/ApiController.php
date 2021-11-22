@@ -54,13 +54,14 @@ class ApiController extends Controller
         return response(['error' => ['message' => 'Equipment not found'], "successful" => false], 404);
     }
 
-    public function getUserEquipmentImage(Request $request)
+    public function getUserEquipmentImage(Request $request,$id)
     {
+        //TODO: validate the request
         //get the user
         $user = $request->user();
         //get the data from the database       
-        $data = EquipmentModel::whereHas('equipment_images', function ($q) use ($request) {
-            $q->where('equipment_image_id', '=', $request->equipment_image_id);
+        $data = EquipmentModel::whereHas('equipment_images', function ($q) use ($id) {
+            $q->where('equipment_image_id', '=', $id);
         })->get()->where('user_id', '=', $user->id);
         //if the equipment is not found return an error
         if (count($data) > 0) {

@@ -24,8 +24,8 @@ use Illuminate\Http\Request;
     Route::middleware('auth:sanctum')->get('/user/getEquipments', [ApiController::class, 'getUserEquipment']);
     Route::middleware('auth:sanctum')->get('/user/getEquipmentByID', [ApiController::class, 'getUserEquipmentByID']);
     Route::middleware('auth:sanctum')->post('/user/createEquipment', [ApiController::class, 'setUserEquipment']);
-    //
-    Route::middleware('auth:sanctum')->get('/user/getImage', [ApiController::class, 'getUserEquipmentImage']);
+
+    Route::middleware('auth:sanctum')->get('/user/getImage/{id}', [ApiController::class, 'getUserEquipmentImage']);
     //
     Route::middleware('auth:sanctum')->get('/getEquipmentTypes', [ApiController::class, 'getAllEquipmentTypes']);
     Route::middleware('auth:sanctum')->get('/getEquipmentStatuses', [ApiController::class, 'getAllEquipmentStatuses']);
