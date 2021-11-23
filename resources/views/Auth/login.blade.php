@@ -26,7 +26,7 @@
                 <div class="mt-4">
                     <label class="block" for="email">Email<label>
                             <input type="text" name="email" placeholder="Email"
-                                class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600">
+                                class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" value="{{ old('email') ?? '' }}">
                             <span
                                 class="text-xs tracking-wide text-red-600">@error('email'){{ $message }}@enderror</span>
                     </div>

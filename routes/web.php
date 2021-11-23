@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\Equipments\EquipmentController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -19,16 +19,13 @@ use Illuminate\Support\Facades\Route;
 // ---- app routes ----
 Route::get('/',[HomeController::class,'index'])->name("home")->middleware('auth');
 Route::post('/add',[EquipmentController::class,"add"])->name("add")->middleware('auth');
-
-Route::get('/test',[HomeController::class,'test'])->name("test")->middleware('auth');
-// ---- register routes ----
+// ---- Auth routes (GET) ----
 Route::get("/register",[HomeController::class,'register'])->name("register");
-Route::post("/register",[AuthController::class,'register'])->name("register");
-// ---- login routes ----
 Route::get("/login",[HomeController::class,'login'])->name("login");
-Route::post("/login",[AuthController::class,'login'])->name("login");
-// ---- logout routes ----
 Route::get("/logout",[AuthController::class,'logout'])->name("logout");
-
-Route::get('/test',[HomeController::class,'test']);
+// ---- Auth routes (POST) ----
+Route::post("/register",[AuthController::class,'register'])->name("register");
+Route::post("/login",[AuthController::class,'login'])->name("login");
+// ---- test routes ----
+Route::get('/test',[HomeController::class,'test'])->name("test")->middleware('auth');
 

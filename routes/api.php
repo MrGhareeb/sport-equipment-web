@@ -18,23 +18,19 @@ use Illuminate\Http\Request;
 |
 */
 
-    // ---- api routes ----
-    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-        return $request->user();
-    });
-
-    Route::middleware('auth:sanctum')->get('/user/equipments', [ApiController::class, 'getUserEquipment']);
-    Route::middleware('auth:sanctum')->get('/user/equipmentByID/{id}', [ApiController::class, 'getUserEquipmentByID']);
-    Route::middleware('auth:sanctum')->post('/user/createEquipment', [ApiController::class, 'setUserEquipment']);
-
-    Route::middleware('auth:sanctum')->get('/user/image/{id}', [ApiController::class, 'getUserEquipmentImage']);
-    //
-    Route::middleware('auth:sanctum')->get('/equipmentTypes', [ApiEquipmentTypesController::class, 'getAllEquipmentTypes']);
-    Route::middleware('auth:sanctum')->get('/equipmentStatuses', [ApiEquipmentStatusesController::class, 'getAllEquipmentStatuses']);
-
-
-    // ---- api auth routes ----
-    Route::post('/register', [ApiAuthController::class, 'register']);
-    Route::post('/login', [ApiAuthController::class, 'login']);
-    Route::middleware('auth:sanctum')->post('/logout', [ApiAuthController::class, 'logout']);
-
+// ---- api routes ----
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+// ---- user related routes ----
+Route::middleware('auth:sanctum')->get('/user/equipments', [ApiController::class, 'getUserEquipment']);
+Route::middleware('auth:sanctum')->get('/user/equipmentByID/{id}', [ApiController::class, 'getUserEquipmentByID']);
+Route::middleware('auth:sanctum')->post('/user/createEquipment', [ApiController::class, 'setUserEquipment']);
+//---- general routes needed from the api ----
+Route::middleware('auth:sanctum')->get('/user/image/{id}', [ApiController::class, 'getUserEquipmentImage']);
+Route::middleware('auth:sanctum')->get('/equipmentTypes', [ApiEquipmentTypesController::class, 'getAllEquipmentTypes']);
+Route::middleware('auth:sanctum')->get('/equipmentStatuses', [ApiEquipmentStatusesController::class, 'getAllEquipmentStatuses']);
+// ---- api auth routes ----
+Route::post('/register', [ApiAuthController::class, 'register']);
+Route::post('/login', [ApiAuthController::class, 'login']);
+Route::middleware('auth:sanctum')->post('/logout', [ApiAuthController::class, 'logout']);
