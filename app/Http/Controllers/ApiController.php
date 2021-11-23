@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\equipmentImagesModel;
 use App\Models\EquipmentModel;
-use App\Models\EquipmentStatusModel;
-use App\Models\EquipmentTypeModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -27,12 +25,12 @@ class ApiController extends Controller
         return response($response, 200);
     }
 
-    public function getUserEquipmentByID(Request $request)
+    public function getUserEquipmentByID(Request $request, $id)
     {
-        //get the values from the request
-        $input = $request->all();
+        //get the id from the url
+        $data = ["id" => $id];
         //validate the values
-        $validator = Validator::make($input, [
+        $validator = Validator::make($data, [
             'id' => 'required|integer'
         ]);
         //if the validation fails return the error
@@ -42,7 +40,7 @@ class ApiController extends Controller
         //get the user
         $user = $request->user();
         //get the equipment
-        $equipments = EquipmentModel::with(['equipment_status', 'equipment_images', "equipment_type"])->where('user_id', $user->id)->where('equipment_id', $input['id'])->get();
+        $equipments = EquipmentModel::with(['equipment_status', 'equipment_images', "equipment_type"])->where('user_id', $user->id)->where('equipment_id', $id)->get();
         //if the equipment is not found return an error
         if (count($equipments) > 0) {
             $response = [
@@ -54,9 +52,26 @@ class ApiController extends Controller
         return response(['error' => ['message' => 'Equipment not found'], "successful" => false], 404);
     }
 
-    public function getUserEquipmentImage(Request $request,$id)
+    /**
+     * get the equipment_image by id
+     * @param Request $request store the request
+     * @param Integer $id store the id of the image
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
+     * @author Ali Ghareeb
+     */
+    public function getUserEquipmentImage(Request $request, $id)
     {
-        //TODO: validate the request
+        //get the id from the url
+        $data = ["id" => $id];
+        //validate the values
+        $validator = Validator::make($data, [
+            'id' => 'required|integer'
+        ]);
+        //if the validation fails return the error
+        if ($validator->fails()) {
+            return response(['error' => $validator->errors(), "successful" => false], 401);
+        }
         //get the user
         $user = $request->user();
         //get the data from the database       
@@ -130,27 +145,5 @@ class ApiController extends Controller
         }
         //return the response
         return response(['successful' => true], 200);
-        return redirect()->name('home');
-    }
-    public function getAllEquipmentTypes(Request $request)
-    {
-        //get all equipment types
-        $data = EquipmentTypeModel::all();
-        //return the response
-        return response([
-            "equipment_types" => $data,
-            "successful" => true
-        ], 200);
-    }
-
-
-    public function getAllEquipmentStatuses(Request $request){
-        //get all equipment statuses
-        $data = EquipmentStatusModel::all();
-        //return the response
-        return response([
-            "equipment_statuses" => $data,
-            "successful" => true
-        ], 200);
     }
 }

@@ -64,8 +64,6 @@ class EquipmentController extends Controller
             }
 
         return redirect('/')->with('message', 'Equipment has been added');
-       
-
     }
 }
 }

@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\EquipmentTypes\ApiEquipmentTypesController;
 use App\Http\Controllers\Auth\ApiAuthController;
+use App\Http\Controllers\EquipmentStatuses\ApiEquipmentStatusesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -21,14 +23,14 @@ use Illuminate\Http\Request;
         return $request->user();
     });
 
-    Route::middleware('auth:sanctum')->get('/user/getEquipments', [ApiController::class, 'getUserEquipment']);
-    Route::middleware('auth:sanctum')->get('/user/getEquipmentByID', [ApiController::class, 'getUserEquipmentByID']);
+    Route::middleware('auth:sanctum')->get('/user/Equipments', [ApiController::class, 'getUserEquipment']);
+    Route::middleware('auth:sanctum')->get('/user/EquipmentByID/{id}', [ApiController::class, 'getUserEquipmentByID']);
     Route::middleware('auth:sanctum')->post('/user/createEquipment', [ApiController::class, 'setUserEquipment']);
 
-    Route::middleware('auth:sanctum')->get('/user/getImage/{id}', [ApiController::class, 'getUserEquipmentImage']);
+    Route::middleware('auth:sanctum')->get('/user/Image/{id}', [ApiController::class, 'getUserEquipmentImage']);
     //
-    Route::middleware('auth:sanctum')->get('/getEquipmentTypes', [ApiController::class, 'getAllEquipmentTypes']);
-    Route::middleware('auth:sanctum')->get('/getEquipmentStatuses', [ApiController::class, 'getAllEquipmentStatuses']);
+    Route::middleware('auth:sanctum')->get('/EquipmentTypes', [ApiEquipmentTypesController::class, 'getAllEquipmentTypes']);
+    Route::middleware('auth:sanctum')->get('/EquipmentStatuses', [ApiEquipmentStatusesController::class, 'getAllEquipmentStatuses']);
 
 
     // ---- api auth routes ----
