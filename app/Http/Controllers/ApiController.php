@@ -146,4 +146,38 @@ class ApiController extends Controller
         //return the response
         return response(['successful' => true], 200);
     }
+
+
+
+    public function updateUserEquipment(Request $request, $id)
+    {
+        //get the values from the request
+        $input = $request->all();
+        //validate the values
+        $validator = Validator::make($input, [
+            'equipment_name' => 'required|string',
+            'equipment_description' => 'string|required',
+            'equipment_status_id' => 'required|integer',
+            'equipment_type_id' => 'required|integer',
+        ]);
+        //if the validation fails return the error
+        if ($validator->fails()) {
+            return response(['error' => $validator->errors(), "successful" => false], 401);
+        }
+        //get the user
+        $user = $request->user();
+        $updated = EquipmentModel::where('user_id', $user->id)->where('equipment_id', $id)->update([
+            'equipment_name' => $input['equipment_name'],
+            'equipment_description' => $input['equipment_description'],
+            'equipment_status_id' => $input['equipment_status_id'],
+            'equipment_type_id' => $input['equipment_type_id'],
+        ]);
+        //if the equipment is not found return an error
+        if ($updated) {
+            return response(['successful' => true], 200);
+        }else{
+            return response(['error' => ['message' => 'Equipment not found'], "successful" => false], 404);
+        }
+
+    }
 }
