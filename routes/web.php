@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 // ---- app routes ----
 Route::get('/',[HomeController::class,'index'])->name("home")->middleware('auth');
 Route::post('/add',[EquipmentController::class,"add"])->name("add")->middleware('auth');
+Route::post('/edit',[EquipmentController::class,"edit"])->name("edit")->middleware('auth');
 // ---- Auth routes (GET) ----
 Route::get("/register",[HomeController::class,'register'])->name("register");
 Route::get("/login",[HomeController::class,'login'])->name("login");

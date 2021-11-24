@@ -17,6 +17,7 @@
                         Item</a> --}}
 
                     @include('includes.addEquipment')
+                    @include('includes.editEquipment')
 
                     {{--  --}}
                 </div>

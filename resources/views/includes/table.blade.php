@@ -1,3 +1,9 @@
+@if(!empty(app('request')->input('id')))
+    <script>
+        toggleModal('edit-equipment',null);
+    </script>
+@endif
+
 <div class="min-full mt-6">
     <table class="w-full">
         <thead>
@@ -41,8 +47,8 @@
                         <div class="flex flex-row justify-center items-center">
                             {{-- edit button --}}
                             <div
-                                class=" hover:bg-blue-300 hover:border-blue-300 rounded p-1 ">
-                                <a href="." class="h-8 flex justify-center items-center w-full">
+                                class=" hover:bg-blue-300 hover:border-blue-300 rounded p-1">
+                                <a href="{{request()->fullUrlWithQuery(["id"=> $item->equipment_id ])}}" value="{{ $item->equipment_id }}" class="h-8 flex justify-center items-center w-full">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mb-1 ml-1"
                                         viewBox="0 0 512 512">
                                         <path
