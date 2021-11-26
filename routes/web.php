@@ -28,5 +28,5 @@ Route::get("/logout",[AuthController::class,'logout'])->name("logout");
 Route::post("/register",[AuthController::class,'register'])->name("register");
 Route::post("/login",[AuthController::class,'login'])->name("login");
 // ---- test routes ----
-Route::get('/test',[HomeController::class,'test'])->name("test")->middleware('auth');
+Route::get('/test',[HomeController::class,'test'])->name("test");
 

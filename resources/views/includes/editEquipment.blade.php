@@ -45,9 +45,11 @@
             </div>
             <!--body-->
             <div class="relative p-6 h-1/3 flex-auto flex-col w-96">
-                <form id="addItem" method="post" action="{{ route('edit') }}" enctype="multipart/form-data">
+                <form id="editItem" method="post" action="{{ route('edit') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="flex flex-col p-4 justify-center items-center">
+                        {{--  --}}
+                        <input type="hidden" name="equipmentId" value="{{ $selectedEquipment->equipment_id ?? ''  }}">
                         {{-- itemName --}}
                         <label for="itemName">Item name</label>
                         <input type="text"
@@ -166,7 +168,7 @@
             transition-all
             duration-150
           "
-                    type="submit" form="addItem" value=" Save item">
+                    type="submit" form="editItem" value=" Save item">
 
                 </input>
                 {{-- onclick="toggleModal('add-equipment')" --}}

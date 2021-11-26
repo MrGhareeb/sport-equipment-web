@@ -10,13 +10,14 @@ use Illuminate\Support\Facades\Auth;
 
 class EquipmentController extends Controller
 {
-    public function add(Request $request){
+    public function add(Request $request)
+    {
         // validate the request
         $request->validate([
             'itemName' => 'required',
-            'ItemDescription'=>'required',
-            'status'=>'required',
-            'equipmentType'=>'required',
+            'ItemDescription' => 'required',
+            'status' => 'required',
+            'equipmentType' => 'required',
         ]);
         //store the equipment in the database
         $equipment = new EquipmentModel();
@@ -33,7 +34,7 @@ class EquipmentController extends Controller
         $equipment_id = $equipment->equipment_id;
         //get the images
         $images = $request->file('images');
-        if($images == null){
+        if ($images == null) {
             return redirect('/')->with('alert', 'Equipment has been added without an image');
         }
         //allowed file types
@@ -59,12 +60,39 @@ class EquipmentController extends Controller
                 if (!$inserted) {
                     return redirect('/')->with('error', 'Equipment image has not been added');
                 }
-            }else{
+            } else {
                 //if the extension is not allowed return an error
                 return redirect('/')->with('error', 'File type is not allowed');
             }
 
-        return redirect('/')->with('message', 'Equipment has been added');
+            return redirect('/')->with('message', 'Equipment has been added');
+        }
     }
-}
+
+
+    public function edit(Request $request)
+    {
+        // validate the request
+        $input = $request->validate([
+            'itemName' => 'required',
+            'ItemDescription' => 'required',
+            'status' => 'required',
+            'equipmentType' => 'required',
+            'equipmentId' => 'required'
+        ]);
+        //update the equipment in the database
+        //get the user
+        $user = $request->user();
+        $updated = EquipmentModel::where('user_id', $user->id)->where('equipment_id', $input['equipmentId'])->update([
+            'equipment_name' => $input['itemName'],
+            'equipment_description' => $input['ItemDescription'],
+            'equipment_status_id' => $input['status'],
+            'equipment_type_id' => $input['equipmentType'],
+        ]);
+        //if the equipment is not found return an error
+        if ($updated) {
+            return redirect('/')->with('message', 'Equipment has been updated');
+        }
+        return redirect('/')->with('error', ' Error equipment has not been updated');
+    }
 }
