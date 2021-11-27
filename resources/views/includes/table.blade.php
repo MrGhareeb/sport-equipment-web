@@ -30,7 +30,12 @@
                 <tr class="bg-white shadow-md">
                     <td class="w-1/12 p-4">
                         <div class="flex flex-row items-center justify-center">
-                            <img class="w-20 max-h-14" src="{{ asset('img/PXL_20211123_112854315.jpg') }}" alt="">
+                            @foreach ($item->equipment_images as $image)
+                            <img class="w-20 max-h-14" src="{{ asset("storage/" .substr($image->equipment_image_path, 7) ) }}" alt=""> 
+                            @endforeach
+                            @if (count($item->equipment_images) == 0)
+                                <img class="w-20 max-h-14" src="{{ asset("img/placeholder.png") }}" alt="">
+                            @endif
                         </div>
                     </td>
 
