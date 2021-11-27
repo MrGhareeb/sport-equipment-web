@@ -15,7 +15,7 @@ class AuthController extends Controller
         //validate the request data
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required|min:8'
+            'password' => 'required|min:6'
         ]);
         //get the email and password from the request
         $credentials = $request->only('email', 'password');
