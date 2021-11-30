@@ -109,19 +109,21 @@ class EquipmentController extends Controller
         if ($equipment == null) {
             return redirect('/')->with('error', 'Equipment not found');
         }
-        //get the equipment images
-        $equipmentImages = EquipmentImagesModel::where('equipment_id', $id)->get();
-        //delete the equipment images from the storage
-        foreach ($equipmentImages as $image) {
-            Storage::delete($image->equipment_image_path);
-        }
-        //delete the images from the database
-        EquipmentImagesModel::where('equipment_id', $id)->delete();
-        //delete the equipment
-        $deleted = $equipment->delete();
-        //if the equipment is not deleted return an error
-        if ($deleted) {
-            return redirect('/')->with('message', 'Equipment has been deleted');
+        //get the equipment
+        $equipment = EquipmentModel::where('user_id', $user->id)->where('equipment_id', $id)->get();
+        //if the equipment is not found return an error
+        if (count($equipment) > 0) {
+            //delete the equipment
+            $updated = EquipmentModel::where('user_id', $user->id)->where('equipment_id', $id)->update(
+                [
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'equipment_status_id' => 5
+                ]
+            );
+            //if the equipment is not found return an error
+            if ($updated) {
+                return redirect('/')->with('message', 'Equipment has been deleted');
+            }
         }
         return redirect('/')->with('error', 'Error equipment has not been deleted');
     }
