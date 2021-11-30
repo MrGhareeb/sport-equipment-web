@@ -7,6 +7,7 @@ use App\Models\equipmentImagesModel;
 use App\Models\EquipmentModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class EquipmentController extends Controller
 {
@@ -94,5 +95,34 @@ class EquipmentController extends Controller
             return redirect('/')->with('message', 'Equipment has been updated');
         }
         return redirect('/')->with('error', ' Error equipment has not been updated');
+    }
+
+
+
+    public function delete(Request $request, $id)
+    {
+        //get the user
+        $user = $request->user();
+        //get the equipment
+        $equipment = EquipmentModel::where('user_id', $user->id)->where('equipment_id', $id)->first();
+        //if the equipment is not found return an error
+        if ($equipment == null) {
+            return redirect('/')->with('error', 'Equipment not found');
+        }
+        //get the equipment images
+        $equipmentImages = EquipmentImagesModel::where('equipment_id', $id)->get();
+        //delete the equipment images from the storage
+        foreach ($equipmentImages as $image) {
+            Storage::delete($image->equipment_image_path);
+        }
+        //delete the images from the database
+        EquipmentImagesModel::where('equipment_id', $id)->delete();
+        //delete the equipment
+        $deleted = $equipment->delete();
+        //if the equipment is not deleted return an error
+        if ($deleted) {
+            return redirect('/')->with('message', 'Equipment has been deleted');
+        }
+        return redirect('/')->with('error', 'Error equipment has not been deleted');
     }
 }

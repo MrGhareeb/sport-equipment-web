@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Equipments\EquipmentController;
 use App\Http\Controllers\HomeController;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',[HomeController::class,'index'])->name("home")->middleware('auth');
 Route::post('/add',[EquipmentController::class,"add"])->name("add")->middleware('auth');
 Route::post('/edit',[EquipmentController::class,"edit"])->name("edit")->middleware('auth');
+Route::get('/delete/{id}',[EquipmentController::class,"delete"])->name("delete")->middleware('auth');
 // ---- Auth routes (GET) ----
 Route::get("/register",[HomeController::class,'register'])->name("register");
 Route::get("/login",[HomeController::class,'login'])->name("login");
@@ -29,4 +31,9 @@ Route::post("/register",[AuthController::class,'register'])->name("register");
 Route::post("/login",[AuthController::class,'login'])->name("login");
 // ---- test routes ----
 Route::get('/test',[HomeController::class,'test'])->name("test");
+
+
+Route::get('qrcode', function () {
+     return QrCode::format('png')->size(100)->generate('MyNotePaper');
+})->name('qrcode');
 

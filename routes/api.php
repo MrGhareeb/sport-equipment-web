@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->get('/user/equipments', [ApiController::class
 Route::middleware('auth:sanctum')->get('/user/equipmentByID/{id}', [ApiController::class, 'getUserEquipmentByID']);
 Route::middleware('auth:sanctum')->post('/user/createEquipment', [ApiController::class, 'setUserEquipment']);
 Route::middleware('auth:sanctum')->post('/user/updateEquipment/{id}', [ApiController::class, 'updateUserEquipment']);
+Route::middleware('auth:sanctum')->get('/user/deleteEquipment/{id}', [ApiController::class, 'deleteUserEquipment']);
 //---- general routes needed from the api ----
 Route::middleware('auth:sanctum')->get('/user/image/{id}', [ApiController::class, 'getUserEquipmentImage']);
 Route::middleware('auth:sanctum')->get('/equipmentTypes', [ApiEquipmentTypesController::class, 'getAllEquipmentTypes']);
