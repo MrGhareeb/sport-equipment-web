@@ -182,14 +182,12 @@ class ApiController extends Controller
     }
 
 
-    public function deleteEquipment(Request $request, $id)
+    public function deleteUserEquipment(Request $request, $id)
     {
         //get the values from the request
-        $input = $request->all();
+        $input = ["id"=>$id];
         //validate the values
-        $validator = Validator::make($input, [
-            'equipment_id' => 'required|integer',
-        ]);
+        $validator = Validator::make($input,["id" => 'required|integer']);
         //if the validation fails return the error
         if ($validator->fails()) {
             return response(['error' => $validator->errors(), "successful" => false], 401);
@@ -214,6 +212,8 @@ class ApiController extends Controller
             if ($deleted) {
                 return response(['successful' => true], 200);
             }
+        }else{
+            return response(['error' => ['message' => 'Equipment not found'], "successful" => false], 404);
         }
     }
 
