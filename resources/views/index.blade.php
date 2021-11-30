@@ -79,10 +79,10 @@
                                 <select name="status" id=""
                                     class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 bg-white">
                                     @foreach ($equipmentStatus as $status)
-                                        @if ($status->equipment_status_id != 5)
+                                        
                                             <option value="{{ $status->equipment_status_id ?? '' }}">
                                                 {{ $status->equipment_status_value ?? '' }}</option>
-                                        @endif
+                                
                                     @endforeach
                                 </select>
                             </div>

@@ -175,19 +175,17 @@ class ApiController extends Controller
         //if the equipment is not found return an error
         if ($updated) {
             return response(['successful' => true], 200);
-        }else{
+        } else {
             return response(['error' => ['message' => 'Equipment not found'], "successful" => false], 404);
         }
-
     }
-
 
     public function deleteUserEquipment(Request $request, $id)
     {
         //get the values from the request
-        $input = ["id"=>$id];
+        $input = ["id" => $id];
         //validate the values
-        $validator = Validator::make($input,["id" => 'required|integer']);
+        $validator = Validator::make($input, ["id" => 'required|integer']);
         //if the validation fails return the error
         if ($validator->fails()) {
             return response(['error' => $validator->errors(), "successful" => false], 401);
@@ -198,24 +196,19 @@ class ApiController extends Controller
         $equipment = EquipmentModel::where('user_id', $user->id)->where('equipment_id', $id)->get();
         //if the equipment is not found return an error
         if (count($equipment) > 0) {
-            //get the equipment images
-            $equipmentImages = EquipmentImagesModel::where('equipment_id', $id)->get();
-            //loop through the images and delete from the storage
-            foreach ($equipmentImages as $image) {
-                Storage::delete($image->equipment_image_path);
-            }
-            //delete the equipment images
-            EquipmentImagesModel::where('equipment_id', $id)->delete();
             //delete the equipment
-            $deleted = EquipmentModel::where('user_id', $user->id)->where('equipment_id', $id)->delete();
+            $updated = EquipmentModel::where('user_id', $user->id)->where('equipment_id', $id)->update(
+                [
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'equipment_status_id' => 5
+                ]
+            );
             //if the equipment is not found return an error
-            if ($deleted) {
+            if ($updated) {
                 return response(['successful' => true], 200);
             }
-        }else{
+        } else {
             return response(['error' => ['message' => 'Equipment not found'], "successful" => false], 404);
         }
     }
-
-
 }
