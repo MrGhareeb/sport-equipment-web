@@ -63,10 +63,11 @@ class ApiController extends Controller
     public function getUserEquipmentImage(Request $request, $id)
     {
         //get the id from the url
-        $data = ["id" => $id];
+        $data = ["id" => $id, 'lost' => $request->lost];
         //validate the values
         $validator = Validator::make($data, [
-            'id' => 'required|integer'
+            'id' => 'required|integer',
+            'lost' => 'boolean'
         ]);
         //if the validation fails return the error
         if ($validator->fails()) {

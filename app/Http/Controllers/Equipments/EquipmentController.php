@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Equipments;
 use App\Http\Controllers\Controller;
 use App\Models\equipmentImagesModel;
 use App\Models\EquipmentModel;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -92,7 +93,7 @@ class EquipmentController extends Controller
         ]);
         //if the equipment is not found return an error
         if ($updated) {
-            return redirect('/')->with('message', 'Equipment has been updated');
+            return redirect('/')->with('mesEquipmentControllersage', 'Equipment has been updated');
         }
         return redirect('/')->with('error', ' Error equipment has not been updated');
     }
@@ -126,5 +127,35 @@ class EquipmentController extends Controller
             }
         }
         return redirect('/')->with('error', 'Error equipment has not been deleted');
+    }
+
+
+
+    public function identifyLostEquipment(Request $request, $id)
+    {
+
+        //get the equipment details
+        $equipment = EquipmentModel::with(['equipment_type','equipment_status','equipment_images'])->where('equipment_id', $id)->first();
+        
+     
+        //get the user details of the equipment
+        $user = User::where('id', $equipment->user_id)->first()->makeHidden(['user_type_id', 'user_status_id', "email_verified_at", 'created_at', 'updated_at']);
+
+        if ($request->json) {
+            if ($equipment == null) {
+                return response([
+                    'message' => 'Equipment not found',
+                    'status' => 'error'
+                ], 404);
+            }
+            //return the data as json
+            return response(['user' => $user, "successful" => true], 200);
+        } else {
+            if ($equipment == null) {
+                return redirect('/')->with('error', 'Equipment not found');
+            }
+            //return identifyLostEquipment view
+            return view('identifyLostEquipment', ['equipment' => $equipment, 'user' => $user]);
+        }
     }
 }

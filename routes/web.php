@@ -22,6 +22,7 @@ Route::get('/',[HomeController::class,'index'])->name("home")->middleware('auth'
 Route::post('/add',[EquipmentController::class,"add"])->name("add")->middleware('auth');
 Route::post('/edit',[EquipmentController::class,"edit"])->name("edit")->middleware('auth');
 Route::get('/delete/{id}',[EquipmentController::class,"delete"])->name("delete")->middleware('auth');
+route::get('/identifyLostEquipment/{id}',[EquipmentController::class,"identifyLostEquipment"])->name("identifyLostEquipment");
 // ---- Auth routes (GET) ----
 Route::get("/register",[HomeController::class,'register'])->name("register");
 Route::get("/login",[HomeController::class,'login'])->name("login");
