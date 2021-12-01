@@ -136,7 +136,10 @@ class EquipmentController extends Controller
 
         //get the equipment details
         $equipment = EquipmentModel::with(['equipment_type','equipment_status','equipment_images'])->where('equipment_id', $id)->first();
-        
+
+        if ($equipment == null) {
+            return redirect('/')->with('error', 'Equipment not found');
+        }
      
         //get the user details of the equipment
         $user = User::where('id', $equipment->user_id)->first()->makeHidden(['user_type_id', 'user_status_id', "email_verified_at", 'created_at', 'updated_at']);
