@@ -67,7 +67,7 @@ class ApiController extends Controller
         //validate the values
         $validator = Validator::make($data, [
             'id' => 'required|integer',
-            'lost' => 'boolean'
+            'lost' => 'boolean|nullable'
         ]);
         //if the validation fails return the error
         if ($validator->fails()) {
