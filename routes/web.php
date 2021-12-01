@@ -34,7 +34,8 @@ Route::post("/login",[AuthController::class,'login'])->name("login");
 Route::get('/test',[HomeController::class,'test'])->name("test");
 
 
-Route::get('qrcode', function () {
-     return QrCode::format('png')->size(100)->generate('MyNotePaper');
+Route::get('qrcode/{id}', function ($id) {
+     $url = route('identifyLostEquipment', ['id' => $id]);
+     return QrCode::format('png')->size(100)->generate($url);
 })->name('qrcode');
 

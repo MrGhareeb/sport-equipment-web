@@ -152,7 +152,7 @@ class EquipmentController extends Controller
                 ], 404);
             }
             //return the data as json
-            return response(['user' => $user, "successful" => true], 200);
+            return response(['user' => $user, "equipment"=> ["equipment_image_id"=>$equipment->equipment_images[0]->equipment_image_id] , "successful" => true], 200);
         } else {
             if ($equipment == null) {
                 return redirect('/')->with('error', 'Equipment not found');
