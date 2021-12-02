@@ -54,6 +54,14 @@ class HomeController extends Controller
         return view('Auth.register');
     }
 
+
+    public function profile(Request $request){
+        //get the logged in user
+        $user = Auth::user();
+        return view('profile',["user"=> $user]);
+    }
+
+
     public function test(Request $request)
     {
         return "test";

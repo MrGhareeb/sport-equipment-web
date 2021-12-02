@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 // ---- app routes ----
 Route::get('/',[HomeController::class,'index'])->name("home")->middleware('auth');
+Route::get('/profile',[HomeController::class,'profile'])->name("profile")->middleware('auth');
 Route::post('/add',[EquipmentController::class,"add"])->name("add")->middleware('auth');
 Route::post('/edit',[EquipmentController::class,"edit"])->name("edit")->middleware('auth');
 Route::get('/delete/{id}',[EquipmentController::class,"delete"])->name("delete")->middleware('auth');
@@ -32,10 +33,8 @@ Route::post("/register",[AuthController::class,'register'])->name("register");
 Route::post("/login",[AuthController::class,'login'])->name("login");
 // ---- test routes ----
 Route::get('/test',[HomeController::class,'test'])->name("test");
-
-
+// ---- QR code routes ----
 Route::get('qrcode/{id}', function ($id) {
      $url = route('identifyLostEquipment', ['id' => $id]);
-     return QrCode::format('png')->size(100)->generate($url);
+     return QrCode::format('png')->size(400)->generate($url);
 })->name('qrcode');
-

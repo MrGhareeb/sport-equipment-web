@@ -68,7 +68,7 @@
                             {{-- QR-code button --}}
                             <div
                                 class="hover:bg-green-300 hover:border-green-300 px-2 rounded p-1 mx-2">
-                                <a href="{{route('qrcode')}}" download="qr-code.png" class="h-8 flex justify-center items-center w-full">
+                                <a href="{{route('qrcode',$item->equipment_id)}}" download="qr-code.png" class="h-8 flex justify-center items-center w-full">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8"
                                         viewBox="0 0 512 512">
                                         <rect x="336" y="336" width="80" height="80" rx="8" ry="8" />
