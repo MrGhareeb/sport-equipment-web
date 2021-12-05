@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 // ---- app routes ----
 Route::get('/',[HomeController::class,'index'])->name("home")->middleware('auth');
 Route::get('/profile',[HomeController::class,'profile'])->name("profile")->middleware('auth');
+Route::get('/editProfile',[HomeController::class,'EditProfile'])->name("EditProfile")->middleware('auth');
 Route::post('/add',[EquipmentController::class,"add"])->name("add")->middleware('auth');
 Route::post('/edit',[EquipmentController::class,"edit"])->name("edit")->middleware('auth');
 Route::get('/delete/{id}',[EquipmentController::class,"delete"])->name("delete")->middleware('auth');

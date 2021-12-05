@@ -36,8 +36,21 @@
                 {{-- left section --}}
                 <div class="flex flex-col w-1/6 h-full">
                     {{-- top section --}}
-                    <div class="bg-white p-4 flex flex-row h-1/3 w-full rounded-md shadow-md mt-20 ml-6 ">
-
+                    <div class="bg-white p-4 flex flex-row h-1/3 w-full justify-center rounded-md shadow-md mt-20 ml-6 ">
+                        <ul>
+                            {{-- view profile --}}
+                            <li class="hover:bg-blue-100">
+                                <a href="{{ route('profile') }}" class="h-16 px-6 flex justify-center items-center w-full">
+                                    View profile
+                                </a>
+                                {{-- edit profile --}}
+                            <li class="hover:bg-blue-100">
+                                <a href="{{ route('EditProfile') }}" class="h-16 px-6 flex justify-center items-center w-full">
+                                    Edit profile
+                                </a>
+                            </li>
+                            </li>
+                        </ul>
                     </div>
                     {{-- bottom section --}}
                     {{-- <div class="bg-white p-4 flex flex-row h-1/3 w-full rounded-md shadow-md mt-10 ml-6 ">
@@ -49,7 +62,8 @@
                     {{-- image div --}}
                     <div class="flex flex-wrap justify-center sm:mt-6 sm:ml-4">
                         <div class="w-8/12 sm:w-40 px-4">
-                            <img src="https://mdbootstrap.com/img/new/avatars/15.jpg" alt="..."
+                            {{-- TODO: add the user profile image --}}
+                            <img src="{{ Avatar::create($user->name)->toBase64() }}" alt="..."
                                 class="rounded-full max-w-full h-auto align-middle border-none" />
                         </div>
                     </div>
@@ -68,12 +82,23 @@
                                 class="px-4 py-2 my-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 bg-white"
                                 disabled>
                             {{-- phone number --}}
-                            <label for="number"
-                                class="block text-xs font-semibold text-gray-600 uppercase">Phone number:</label>
+                            <label for="number" class="block text-xs font-semibold text-gray-600 uppercase">Phone
+                                number:</label>
                             <input type="text" value="{{ $user->mobile_number }}" name="number"
                                 class="px-4 py-2 my-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 bg-white"
                                 disabled>
-
+                            {{-- dropdown for user privacy level --}}
+                            <label for="privacy" class="block text-xs font-semibold text-gray-600 uppercase">privacy</label>
+                            <select name="privacy"
+                                class="px-4 py-2 my-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600 bg-white"
+                                style="width:14.7rem" disabled>
+                                @if ($user->private == 1)
+                                    <option value="1">private</option>
+                                @else
+                                    <option value="0">public</option>
+                                @endif
+                                {{-- <input type="text" value="{{ '' }}" name="number" disabled> --}}
+                            </select>
                         </form>
                     </div>
                 </div>

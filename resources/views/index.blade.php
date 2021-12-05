@@ -88,7 +88,7 @@
                             </div>
                             <div class="mt-6 flex justify-center">
                                 <input type="submit" class="w-1/3 py-2 bg-blue-500 ml-3 border rounded-md text-white"
-                                    value="search">
+                                    value="Filter">
                             </div>
                         </form>
                     </div>
