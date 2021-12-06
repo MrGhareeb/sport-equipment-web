@@ -60,6 +60,7 @@ class HomeController extends Controller
         $user = Auth::user();
         return view('profile',["user"=> $user]);
     }
+    
     public function EditProfile(Request $request){
         //get the logged in user
         $user = Auth::user();

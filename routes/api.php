@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\ApiAuthController;
 use App\Http\Controllers\EquipmentStatuses\ApiEquipmentStatusesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Laravolt\Avatar\Avatar;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,11 @@ use Illuminate\Http\Request;
 // ---- api routes ----
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+Route::middleware('auth:sanctum')->get('/user/profileImage', function (Request $request) {
+    $user = $request->user();
+    $avatar = new Avatar();
+     return $avatar->create($user->name)->toBase64();
 });
 // ---- user related routes ----
 Route::middleware('auth:sanctum')->get('/user/equipments', [ApiController::class, 'getUserEquipment']);

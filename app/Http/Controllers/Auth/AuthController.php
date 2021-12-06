@@ -34,7 +34,7 @@ class AuthController extends Controller
                     }
                 } else {
                     //if the user is not active
-                    return redirect('/login')->with('error', 'Your account is not active. Please contact the administrator.');
+                    return redirect('/login')->with('error', 'Your account is not active or deleted. Please contact the administrator.');
                 }
             } else {
                 //if the password is incorrect redirect to the login page with an error message
