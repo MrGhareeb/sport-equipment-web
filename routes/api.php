@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\ApiUserController;
 use App\Http\Controllers\EquipmentTypes\ApiEquipmentTypesController;
 use App\Http\Controllers\Auth\ApiAuthController;
 use App\Http\Controllers\EquipmentStatuses\ApiEquipmentStatusesController;
@@ -19,7 +20,7 @@ use Laravolt\Avatar\Avatar;
 |
 */
 
-// ---- api routes ----
+// ---- user routes ----
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -28,7 +29,12 @@ Route::middleware('auth:sanctum')->get('/user/profileImage', function (Request $
     $avatar = new Avatar();
      return $avatar->create($user->name)->setDimension(300)->setFontSize(75)->toBase64();
 });
-// ---- user related routes ----
+
+Route::middleware('auth:sanctum')->get('/user/edit', [ApiUserController::class, 'edit']);
+Route::middleware('auth:sanctum')->get('/user/delete', [ApiUserController::class, 'delete']);
+
+
+// ---- equipment related routes ----
 Route::middleware('auth:sanctum')->get('/user/equipments', [ApiController::class, 'getUserEquipment']);
 Route::middleware('auth:sanctum')->get('/user/equipmentByID/{id}', [ApiController::class, 'getUserEquipmentByID']);
 Route::middleware('auth:sanctum')->post('/user/createEquipment', [ApiController::class, 'setUserEquipment']);

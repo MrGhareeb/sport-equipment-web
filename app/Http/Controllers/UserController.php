@@ -27,9 +27,14 @@ class UserController extends Controller
         }
         // done this way because I had a problem with Auth::user()->update()
         $user = User::where('id', auth()->user()->id)->first();
-        // dd($request->privacy);
+        //validate the email
+        if ($user->email != $request->email) {
+            if (User::where('email', $request->email)->exists()) {
+                return redirect('/editProfile')->with('error', 'The email is already taken');
+            }
+            $user->email = $request->email;
+        }
         $user->name = $request->name;
-        $user->email = $request->email;
         $user->private = $request->privacy;
         $user->mobile_number = $request->mobile_number;
         //if the user wants to change the password
@@ -44,7 +49,8 @@ class UserController extends Controller
     }
 
 
-    public function delete(Request $request){
+    public function delete(Request $request)
+    {
         $request->validate([
             'password' => 'required|string|min:6',
         ]);
@@ -55,6 +61,7 @@ class UserController extends Controller
         $user->user_status_id = 2;
         $user->update();
         $request->session()->flush();
+        $user->tokens()->delete();
         return redirect('/')->with('message', 'Account deleted successfully');
     }
 }
