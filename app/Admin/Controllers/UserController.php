@@ -38,7 +38,7 @@ class UserController extends AdminController
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
         $grid->column('user_type_id', __('User type id'));
-        $grid->column('user_status_id', __('User status id'));
+        $grid->column('user_status.user_status_value','User Status');
 
         return $grid;
     }
@@ -65,7 +65,7 @@ class UserController extends AdminController
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
         $show->field('user_type_id', __('User type id'));
-        $show->field('user_status_id', __('User status id'));
+        $show->field('user_status.user_status_value','User status');
 
         return $show;
     }
@@ -82,14 +82,13 @@ class UserController extends AdminController
         $form->text('name', __('Name'));
         $form->email('email', __('Email'));
         $form->datetime('email_verified_at', __('Email verified at'))->default(date('Y-m-d H:i:s'));
-        $form->password('password', __('Password'));
         $form->switch('private', __('Private'));
         $form->text('user_image', __('User image'));
         $form->text('mobile_number', __('Mobile number'));
         $form->text('remember_token', __('Remember token'));
         $form->number('user_type_id', __('User type id'));
-        $form->number('user_status_id', __('User status id'));
-
+        // $form->text('user_status.user_status_value', __('User status'));
+        $form->select("user_status_id", __("User Status"))->options([1=>'Active',2=>'Deleted']);
         return $form;
     }
 }

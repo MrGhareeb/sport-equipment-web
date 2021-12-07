@@ -5,6 +5,7 @@ use App\Http\Controllers\ApiUserController;
 use App\Http\Controllers\EquipmentTypes\ApiEquipmentTypesController;
 use App\Http\Controllers\Auth\ApiAuthController;
 use App\Http\Controllers\EquipmentStatuses\ApiEquipmentStatusesController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Laravolt\Avatar\Avatar;
@@ -48,3 +49,8 @@ Route::middleware('auth:sanctum')->get('/equipmentStatuses', [ApiEquipmentStatus
 Route::post('/register', [ApiAuthController::class, 'register']);
 Route::post('/login', [ApiAuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [ApiAuthController::class, 'logout']);
+
+Route::get('/test', function (Request $request) {
+    $user = User::with(['user_status'])->where('id',$request->user()->id)->first();
+    return $user;
+})->middleware('auth:sanctum');
