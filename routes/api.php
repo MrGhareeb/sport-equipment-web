@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->get('/user/profileImage', function (Request $request) {
     $user = $request->user();
     $avatar = new Avatar();
-     return $avatar->create($user->name)->toBase64();
+     return $avatar->create($user->name)->setDimension(300)->setFontSize(75)->toBase64();
 });
 // ---- user related routes ----
 Route::middleware('auth:sanctum')->get('/user/equipments', [ApiController::class, 'getUserEquipment']);
