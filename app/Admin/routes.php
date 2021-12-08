@@ -16,6 +16,10 @@ Route::group([
     // $router->resource('users', UserController::class);
     $router->resource('application/users', UserController::class);
     $router->resource('equipment-models', EquipmentController::class);
+    $router->resource('equipment-status-models', EquipmentStatusController::class);
+    $router->resource('equipment-type-models', EquipmentTypeController::class);
+    $router->resource('equipment-images-models', EquipmentImageController::class);
+    $router->resource('user-statuses', UserStatusController::class);
 
 
 });

@@ -11,7 +11,7 @@ return [
     | login page.
     |
     */
-    'name' => 'Laravel-admin',
+    'name' => 'Mafqoud',
 
     /*
     |--------------------------------------------------------------------------
@@ -22,7 +22,7 @@ return [
     | `img` tag, eg '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo' => '<b>Laravel</b> admin',
+    'logo' => '<b>Mafqoud admin panel</b>',
 
     /*
     |--------------------------------------------------------------------------
@@ -223,7 +223,7 @@ return [
          * or specific method to path like: get:admin/auth/logs.
          */
         'except' => [
-            env('ADMIN_ROUTE_PREFIX', 'admin').'/auth/logs*',
+            env('ADMIN_ROUTE_PREFIX', 'admin') . '/auth/logs*',
         ],
     ],
 
@@ -348,9 +348,7 @@ return [
     'minify_assets' => [
 
         // Assets will not be minified.
-        'excepts' => [
-
-        ],
+        'excepts' => [],
 
     ],
 
@@ -405,6 +403,9 @@ return [
     |
     */
     'extensions' => [
-
+        'material-ui' => [
+            // If the value is set to false, this extension will be disabled
+            'enable' => true
+        ]
     ],
 ];
