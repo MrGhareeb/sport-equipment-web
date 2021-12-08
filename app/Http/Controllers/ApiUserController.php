@@ -11,7 +11,9 @@ class ApiUserController extends Controller
     //
     function edit(Request $request)
     {
-        $validator = Validator::make($request, [
+        $input = $request->all();
+
+        $validator = Validator::make($input, [
             'name' => 'required|string',
             'mobile_number' => 'required|string',
             'private' => 'nullable|boolean',
@@ -71,7 +73,9 @@ class ApiUserController extends Controller
 
     function delete(Request $request)
     {
-        $validator = Validator::make($request, [
+        $input = $request->all();
+        
+        $validator = Validator::make($input, [
             'password' => 'required|string|confirmed',
             'password_confirmation' => 'required|string',
         ]);

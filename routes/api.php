@@ -31,8 +31,8 @@ Route::middleware('auth:sanctum')->get('/user/profileImage', function (Request $
      return $avatar->create($user->name)->setDimension(300)->setFontSize(75)->toBase64();
 });
 
-Route::middleware('auth:sanctum')->get('/user/edit', [ApiUserController::class, 'edit']);
-Route::middleware('auth:sanctum')->get('/user/delete', [ApiUserController::class, 'delete']);
+Route::middleware('auth:sanctum')->post('/user/edit', [ApiUserController::class, 'edit']);
+Route::middleware('auth:sanctum')->delete('/user/delete', [ApiUserController::class, 'delete']);
 
 
 // ---- equipment related routes ----
