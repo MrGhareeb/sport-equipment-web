@@ -30,17 +30,16 @@ Route::middleware('auth:sanctum')->get('/user/profileImage', function (Request $
     $avatar = new Avatar();
      return $avatar->create($user->name)->setDimension(300)->setFontSize(75)->toBase64();
 });
-
 Route::middleware('auth:sanctum')->post('/user/edit', [ApiUserController::class, 'edit']);
 Route::middleware('auth:sanctum')->delete('/user/delete', [ApiUserController::class, 'delete']);
-
-
 // ---- equipment related routes ----
 Route::middleware('auth:sanctum')->get('/user/equipments', [ApiController::class, 'getUserEquipment']);
 Route::middleware('auth:sanctum')->get('/user/equipmentByID/{id}', [ApiController::class, 'getUserEquipmentByID']);
 Route::middleware('auth:sanctum')->post('/user/createEquipment', [ApiController::class, 'setUserEquipment']);
 Route::middleware('auth:sanctum')->post('/user/updateEquipment/{id}', [ApiController::class, 'updateUserEquipment']);
 Route::middleware('auth:sanctum')->delete('/user/deleteEquipment/{id}', [ApiController::class, 'deleteUserEquipment']);
+Route::middleware('auth:sanctum')->get('/user/transferEquipment/{token}', [ApiController::class, 'transferEquipment']);
+Route::middleware('auth:sanctum')->get('/user/getTransferToken/{id}', [ApiController::class, 'getTransferToken']);
 //---- general routes needed from the api ----
 Route::middleware('auth:sanctum')->get('/user/image/{id}', [ApiController::class, 'getUserEquipmentImage']);
 Route::middleware('auth:sanctum')->get('/equipmentTypes', [ApiEquipmentTypesController::class, 'getAllEquipmentTypes']);

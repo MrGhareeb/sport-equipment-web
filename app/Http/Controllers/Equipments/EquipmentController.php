@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Equipments;
 use App\Http\Controllers\Controller;
 use App\Models\equipmentImagesModel;
 use App\Models\EquipmentModel;
+use App\Models\EquipmentTransferModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 
 class EquipmentController extends Controller
 {
@@ -82,9 +85,16 @@ class EquipmentController extends Controller
             'equipmentType' => 'required',
             'equipmentId' => 'required'
         ]);
-        //update the equipment in the database
         //get the user
         $user = $request->user();
+        if ($input['status'] == 6) {
+            $inserted = EquipmentTransferModel::insert([
+                "equipment_transfer_token" => Str::random(15),
+                "equipment_id" => $input["equipmentId"],
+                "user_id" => $user->id,
+                "created_at" => date('Y-m-d H:i:s')
+            ]);
+        }
         $updated = EquipmentModel::where('user_id', $user->id)->where('equipment_id', $input['equipmentId'])->update([
             'equipment_name' => $input['itemName'],
             'equipment_description' => $input['ItemDescription'],
@@ -135,12 +145,12 @@ class EquipmentController extends Controller
     {
 
         //get the equipment details
-        $equipment = EquipmentModel::with(['equipment_type','equipment_status','equipment_images'])->where('equipment_id', $id)->first();
+        $equipment = EquipmentModel::with(['equipment_type', 'equipment_status', 'equipment_images'])->where('equipment_id', $id)->first();
 
         if ($equipment == null) {
             return redirect('/')->with('error', 'Equipment not found');
         }
-     
+
         //get the user details of the equipment
         $user = User::where('id', $equipment->user_id)->first()->makeHidden(['user_type_id', 'user_status_id', "email_verified_at", 'created_at', 'updated_at']);
 
@@ -152,7 +162,7 @@ class EquipmentController extends Controller
                 ], 404);
             }
             //return the data as json
-            return response(['user' => $user, "equipment"=> ["equipment_image_id"=>$equipment->equipment_images[0]->equipment_image_id] , "successful" => true], 200);
+            return response(['user' => $user, "equipment" => ["equipment_image_id" => $equipment->equipment_images[0]->equipment_image_id], "successful" => true], 200);
         } else {
             if ($equipment == null) {
                 return redirect('/')->with('error', 'Equipment not found');

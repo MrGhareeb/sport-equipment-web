@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\equipmentImagesModel;
 use App\Models\EquipmentModel;
+use App\Models\EquipmentTransferModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class ApiController extends Controller
 {
@@ -167,6 +169,16 @@ class ApiController extends Controller
         }
         //get the user
         $user = $request->user();
+        //check the equipment status if the item is marked as forTransfer
+        if ($input['equipment_status_id'] == 6) {
+            $inserted = EquipmentTransferModel::insert([
+                "equipment_transfer_token" => Str::random(15),
+                "equipment_id" => $input["equipment_id"],
+                "user_id" => $user->id,
+                "created_at" => date('Y-m-d H:i:s')
+            ]);
+        }
+        //update the equipment values
         $updated = EquipmentModel::where('user_id', $user->id)->where('equipment_id', $id)->update([
             'equipment_name' => $input['equipment_name'],
             'equipment_description' => $input['equipment_description'],
@@ -180,6 +192,96 @@ class ApiController extends Controller
             return response(['error' => ['message' => 'Equipment not found'], "successful" => false], 404);
         }
     }
+
+    public function getTransferToken(Request $request, $id)
+    {
+        //get the values from the request
+        $input = ["equipment_id" => $id];
+
+        //validate the values
+        $validator = Validator::make($input, [
+            'equipment_id' => 'required|integer'
+        ]);
+        //if the validation fails return the error
+        if ($validator->fails()) {
+            return response(['error' => $validator->errors(), "successful" => false], 401);
+        }
+        //get the user
+        $user = $request->user();
+        //get the transfer data of the equipment from the database
+        $equipmentTransfer = EquipmentTransferModel::where("user_id", $user->id)->where("equipment_id", $input["equipment_id"])->get();
+
+        // check if there is a transfer for this equipment that is valid
+        if (!empty($equipmentTransfer)) {
+            //get date of insert and add 5 minutes
+            $expiryDate = Date("Y:M:s", strtotime("5 minutes", strtotime($equipmentTransfer[0]->created_at)));
+            //get current date
+            $currentDate = date('Y-m-d H:i:s');
+            if ($currentDate > $expiryDate) {
+                return response(['error' => ['message' => 'Transfer time have expired'], "successful" => false], 410);
+            }
+            return response(['equipment_transfer' => $equipmentTransfer, 'successful' => true], 200);
+        }
+        return response(['error' => ['message' => 'No transfer found'], "successful" => false], 404);
+    }
+
+    public function transferEquipment(Request $request, $token)
+    {
+        //get the values from the request
+        $input = ["token" => $token];
+        //validate the values
+        $validator = Validator::make($input, [
+            'token' => 'required|string'
+        ]);
+        //if the validation fails return the error
+        if ($validator->fails()) {
+            return response(['error' => $validator->errors(), "successful" => false], 401);
+        }
+        //get the user
+        $userToTransfer = $request->user();
+        $equipmentTransfer = EquipmentTransferModel::where("equipment_transfer_token", $token)->first();
+        //check if the equipment transfer not found
+        if (empty($equipmentTransfer)) {
+            return response(['error' => ['message' => 'Equipment transfer not found'], "successful" => false], 404);
+        }
+        //get the equipment
+        $equipment = EquipmentModel::with('equipment_status')->where('equipment_id', $equipmentTransfer['equipment_id'])->get();
+        //if the equipment is not found return an error
+        if (!empty($equipment)) {
+            //check if the equipment marked as ForTransfer
+            if ($equipment[0]->equipment_status_id == 6) {
+                //check if the token given is valid
+                if ($token != $equipmentTransfer["equipment_transfer_token"]) {
+                    return response(['error' => ['message' => 'Invalid transfer token'], "successful" => false], 410);
+                }
+                // check that the transfer hasn't expired yet
+                $expiryDate = Date("Y:M:s", strtotime("5 minutes", strtotime($equipmentTransfer["created_at"])));
+                //get current date
+                $currentDate = date('Y-m-d H:i:s');
+                if ($currentDate > $expiryDate) {
+                    return response(['error' => ['message' => 'Transfer time have expired'], "successful" => false], 410);
+                }
+                //update the equipment -> user_id to the new owner
+                $updated = EquipmentModel::where('equipment_id', $equipmentTransfer['equipment_id'])->update([
+                    'user_id' => $userToTransfer->id,
+                    "equipment_status_id" => 1
+                ]);
+
+                //update the equipment transfer values
+                if ($updated) {
+                    $equipmentTransfer->equipment_transfer_token = '';
+                    $equipmentTransfer->new_user_id = $userToTransfer->id;
+                    $equipment->update_at = date('Y-m-d H:i:s');
+                    $equipmentTransfer->save();
+                    //return the response
+                    return response(['successful' => true], 200);
+                }
+                return response(['error' => ['message' => 'Update failed'], "successful" => false], 404);
+            }
+        }
+        return response(['error' => ['message' => 'Equipment not found'], "successful" => false], 404);
+    }
+
 
     public function deleteUserEquipment(Request $request, $id)
     {
