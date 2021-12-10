@@ -24,6 +24,14 @@ class EquipmentController extends Controller
             'status' => 'required',
             'equipmentType' => 'required',
         ]);
+        if ($request['status'] == 6) {
+            $inserted = EquipmentTransferModel::insert([
+                "equipment_transfer_token" => Str::random(15),
+                "equipment_id" => $request["equipmentId"],
+                "user_id" => $request->id,
+                "created_at" => date('Y-m-d H:i:s')
+            ]);
+        }
         //store the equipment in the database
         $equipment = new EquipmentModel();
         $equipment->equipment_name = $request->itemName;
