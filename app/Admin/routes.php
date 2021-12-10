@@ -20,6 +20,7 @@ Route::group([
     $router->resource('equipment-type-models', EquipmentTypeController::class);
     $router->resource('equipment-images-models', EquipmentImageController::class);
     $router->resource('user-statuses', UserStatusController::class);
+    $router->resource('equipment-transfer-models', EquipmentTransferController::class);
 
 
 });

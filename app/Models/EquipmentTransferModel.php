@@ -19,7 +19,7 @@ class EquipmentTransferModel extends Model
         'updated_at',
     ];
 
-    protected $hidden = [
-        'equipment_transfer_id'
-    ];
+    // protected $hidden = [
+    //     'equipment_transfer_id'
+    // ];
 }
