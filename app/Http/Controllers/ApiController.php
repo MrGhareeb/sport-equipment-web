@@ -116,6 +116,24 @@ class ApiController extends Controller
         $equipment->save();
         //get the equipment id
         $equipment_id = $equipment->equipment_id;
+        //check the equipment status if the item is marked as forTransfer
+        if ($input['equipment_status_id'] == 6) {
+            //check if their is equipmentTransfer record
+            $equipmentTransfer = EquipmentTransferModel::where('equipment_id', $equipment_id)->where("user_id",$user->id)->get();
+            //if the equipmentTransfer record is available update it
+            if (count($equipmentTransfer) > 0) {
+                $equipmentTransfer[0]->equipment_transfer_token = Str::random(15);
+                $equipmentTransfer[0]->created_at = date('Y-m-d H:i:s');
+                $equipmentTransfer[0]->save();
+            } else {
+                $inserted = EquipmentTransferModel::insert([
+                    "equipment_transfer_token" => Str::random(15),
+                    "equipment_id" => $equipment_id,
+                    "user_id" => $user->id,
+                    "created_at" => date('Y-m-d H:i:s')
+                ]);
+            }
+        }
         //get the images
         $images = $request->file('images');
         //allowed file types
@@ -171,12 +189,21 @@ class ApiController extends Controller
         $user = $request->user();
         //check the equipment status if the item is marked as forTransfer
         if ($input['equipment_status_id'] == 6) {
-            $inserted = EquipmentTransferModel::insert([
-                "equipment_transfer_token" => Str::random(15),
-                "equipment_id" => $id,
-                "user_id" => $user->id,
-                "created_at" => date('Y-m-d H:i:s')
-            ]);
+            //check if their is equipmentTransfer record
+            $equipmentTransfer = EquipmentTransferModel::where('equipment_id', $id)->where("user_id",$user->id)->get();
+            //if the equipmentTransfer record is available update it
+            if (count($equipmentTransfer) > 0) {
+                $equipmentTransfer[0]->equipment_transfer_token = Str::random(15);
+                $equipmentTransfer[0]->created_at = date('Y-m-d H:i:s');
+                $equipmentTransfer[0]->save();
+            } else {
+                $inserted = EquipmentTransferModel::insert([
+                    "equipment_transfer_token" => Str::random(15),
+                    "equipment_id" => $id,
+                    "user_id" => $user->id,
+                    "created_at" => date('Y-m-d H:i:s')
+                ]);
+            }
         }
         //update the equipment values
         $updated = EquipmentModel::where('user_id', $user->id)->where('equipment_id', $id)->update([
@@ -215,13 +242,12 @@ class ApiController extends Controller
         if (!empty($equipmentTransfer)) {
             //get date of insert and add 5 minutes
             $expiryDate = Date("Y-m-d H:i:s", strtotime("5 minutes", strtotime($equipmentTransfer[0]->created_at)));
-
             //get current date
             $currentDate = date('Y-m-d H:i:s');
             if ($currentDate > $expiryDate) {
                 return response(['error' => ['message' => 'Transfer time have expired'], "successful" => false], 410);
             }
-            return response(['equipment_transfer' => $equipmentTransfer, 'successful' => true, 'expiryDate' => $expiryDate, 'currDate' => $currentDate], 200);
+            return response(['equipment_transfer' => $equipmentTransfer, 'expiryDate' => $expiryDate, 'currentDate' => $currentDate, 'successful' => true], 200);
         }
         return response(['error' => ['message' => 'No transfer found'], "successful" => false], 404);
     }
