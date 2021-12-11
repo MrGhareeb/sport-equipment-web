@@ -173,7 +173,7 @@ class ApiController extends Controller
         if ($input['equipment_status_id'] == 6) {
             $inserted = EquipmentTransferModel::insert([
                 "equipment_transfer_token" => Str::random(15),
-                "equipment_id" => $input["equipment_id"],
+                "equipment_id" => $id,
                 "user_id" => $user->id,
                 "created_at" => date('Y-m-d H:i:s')
             ]);
