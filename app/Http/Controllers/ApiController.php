@@ -214,13 +214,14 @@ class ApiController extends Controller
         // check if there is a transfer for this equipment that is valid
         if (!empty($equipmentTransfer)) {
             //get date of insert and add 5 minutes
-            $expiryDate = Date("Y:M:s", strtotime("5 minutes", strtotime($equipmentTransfer[0]->created_at)));
+            $expiryDate = Date("Y-m-d H:i:s", strtotime("5 minutes", strtotime($equipmentTransfer[0]->created_at)));
+
             //get current date
             $currentDate = date('Y-m-d H:i:s');
             if ($currentDate > $expiryDate) {
                 return response(['error' => ['message' => 'Transfer time have expired'], "successful" => false], 410);
             }
-            return response(['equipment_transfer' => $equipmentTransfer, 'successful' => true], 200);
+            return response(['equipment_transfer' => $equipmentTransfer, 'successful' => true, 'expiryDate' => $expiryDate, 'currDate' => $currentDate], 200);
         }
         return response(['error' => ['message' => 'No transfer found'], "successful" => false], 404);
     }
