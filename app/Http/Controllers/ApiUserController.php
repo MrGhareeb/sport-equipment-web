@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ApiUserController extends Controller
 {
@@ -32,11 +33,8 @@ class ApiUserController extends Controller
         }
         // validate the password
         if ($request->has('password')) {
-            if (!$user->verifyPassword($request->password)) {
-                return response()->json([
-                    'message' => 'Password is incorrect',
-                    "successful" => false
-                ], 400);
+            if (!$user || !Hash::check($input['password'], $user->password)) {
+                return response(['error'=> ['message' => 'Invalid Credentials'] ,"successful"=>false], 401);
             }
         }
         //validate the email
